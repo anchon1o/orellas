@@ -1,22 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><title>Web Audio API Test</title></head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teclado Virtual - WebAudioFont</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://surikov.github.io/webaudiofont/npm/dist/WebAudioFontPlayer.js"></script>
+  <script defer src="main.js"></script>
+</head>
 <body>
-  <h1>Prueba de Web Audio API</h1>
-  <button onclick="playTone()">Tocar tono puro</button>
-
-  <script>
-    function playTone() {
-      const ac = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = ac.createOscillator();
-      const gain = ac.createGain();
-      osc.type = "sine";
-      osc.frequency.value = 440;
-      osc.connect(gain);
-      gain.connect(ac.destination);
-      osc.start();
-      osc.stop(ac.currentTime + 1);
-    }
-  </script>
+  <h1>Teclado Virtual</h1>
+  <div class="keyboard" id="keyboard"></div>
 </body>
 </html>
