@@ -30,7 +30,7 @@ function reproducirSerie() {
 
   const nivel = parseInt(document.getElementById("nivel").value);
   const velocidad = parseInt(document.getElementById("velocidad").value);
-  const intervalo = 1.4 - (velocidad * 0.2);  // velocidad 1 = lento, 5 = rápido
+  const intervalo = 1.4 - (velocidad * 0.2);
   const duracion = intervalo * 0.9;
 
   respuesta = [];
@@ -51,7 +51,6 @@ function reproducirSerie() {
     osciladoresActivos.push(osc);
   }
 
-  
   document.getElementById("resultado").textContent = "";
 
   document.querySelectorAll('button').forEach(btn =>
