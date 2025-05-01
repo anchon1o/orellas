@@ -119,7 +119,7 @@ function actualizarRespuesta() {
     const nota = todasLasNotas.find(n => n.id === id);
     return nota ? nota.texto.replace(/<br>/g, "/") : id;
   }).join(" – ");
-  document.getElementById("respuesta").textContent = texto;
+  document.getElementById("respuesta").innerHTML = `<div class="respuesta-simple">${texto}</div>`;
 }
 
 function verificar() {
