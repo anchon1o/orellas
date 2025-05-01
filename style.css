@@ -24,6 +24,18 @@ h1 {
   margin-right: 0.3rem;
 }
 
+.control-slider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0.5rem;
+}
+
+.control-slider label {
+  margin-bottom: 0.2rem;
+  font-weight: bold;
+}
+
 #nivel {
   width: 120px;
 }
