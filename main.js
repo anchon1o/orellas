@@ -129,12 +129,12 @@ function verificar() {
   const resultado = document.getElementById("resultado");
 
   if (usuario === correcta) {
-    resultado.innerHTML = `<span class="correcto">¡Correcto!</span>`;
+    resultado.innerHTML = `<div class="resultado-discreto correcto">¡Correcto!</div>`;
   } else {
     const textoCorrecto = serie.map(n => n.texto.replace(/<br>/g, "/")).join(" – ");
     resultado.innerHTML = `
-      <span class="incorrecto">Incorrecto</span><br>
-      <small>La serie correcta era:<br>${textoCorrecto}</small>
+      <div class="resultado-discreto incorrecto">Incorrecto</div>
+      <div class="serie-correcta">${textoCorrecto}</div>
     `;
   }
 }
