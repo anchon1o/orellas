@@ -1,13 +1,5 @@
 let ac;
 let player;
-
-async function inicializarAudio(nombreInstrumento = "acoustic_grand_piano") {
-  if (!ac) {
-    ac = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  player = await Soundfont.instrument(ac, nombreInstrumento);
-}
-let player;
 let melodia = [];
 let respuesta = [];
 
@@ -21,8 +13,11 @@ const btnGenerar = document.getElementById("generate");
 const btnRepetir = document.getElementById("replay");
 const feedback = document.getElementById("feedback");
 
-async function cargarInstrumento(nombre = "acoustic_grand_piano") {
-  player = await Soundfont.instrument(ac, nombre);
+async function inicializarAudio(nombreInstrumento = "acoustic_grand_piano") {
+  if (!ac) {
+    ac = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  player = await Soundfont.instrument(ac, nombreInstrumento);
 }
 
 function generarMelodia(numNotas) {
@@ -35,6 +30,7 @@ function generarMelodia(numNotas) {
 }
 
 function reproducirMelodia(melodia) {
+  if (!player) return;
   let t = ac.currentTime;
   melodia.forEach(nota => {
     player.play(nota, t, { duration: duracionNota });
@@ -69,22 +65,27 @@ function comprobarRespuesta() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  await cargarInstrumento();
+document.addEventListener("DOMContentLoaded", () => {
   crearTeclado();
 
   selectInstrumento.onchange = async () => {
-    const nombre = selectInstrumento.value;
-    await cargarInstrumento(nombre);
+    if (ac) {
+      await inicializarAudio(selectInstrumento.value);
+    }
   };
 
-  selectInstrumento.onchange = async () => {
-  if (ac) {
+  btnGenerar.onclick = async () => {
     await inicializarAudio(selectInstrumento.value);
-  }
-};
+    melodia = generarMelodia(parseInt(selectNotas.value));
+    respuesta = [];
+    feedback.textContent = "";
+    reproducirMelodia(melodia);
+    btnRepetir.disabled = false;
+  };
 
   btnRepetir.onclick = () => {
-    reproducirMelodia(melodia);
+    if (melodia.length > 0) {
+      reproducirMelodia(melodia);
+    }
   };
 });
