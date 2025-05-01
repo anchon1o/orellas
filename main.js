@@ -45,7 +45,8 @@ function reproducirSerie() {
   for (let i = 0; i < serie.length; i++) {
     const osc = ac.createOscillator();
     const gain = ac.createGain();
-    osc.type = "sine";
+    const tipoOnda = document.getElementById("forma-onda").value;
+    osc.type = tipoOnda;
 
     let freq = serie[i].freq;
     if (usarOctavaSuperior && Math.random() < 0.5) freq *= 2;
@@ -218,7 +219,8 @@ document.getElementById("repeat").onclick = () => {
   for (let i = 0; i < ultimaReproduccion.length; i++) {
     const osc = ac.createOscillator();
     const gain = ac.createGain();
-    osc.type = "sine";
+    const tipoOnda = document.getElementById("forma-onda").value;
+    osc.type = tipoOnda;
     osc.frequency.value = ultimaReproduccion[i].freq;
 
     osc.connect(gain);
