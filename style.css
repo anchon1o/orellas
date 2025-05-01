@@ -69,6 +69,14 @@ button {
   display: none;
 }
 
+.grupo-switches {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
 .slider {
   width: 38px;
   height: 18px;
