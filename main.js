@@ -1,91 +1,50 @@
 let ac;
-let player;
-let melodia = [];
-let respuesta = [];
+let piano;
 
-const notasDisponibles = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
-const tempo = 80;
-const duracionNota = 60 / tempo;
+const whiteKeys = [
+  { note: "C4" }, { note: "D4" }, { note: "E4" },
+  { note: "F4" }, { note: "G4" }, { note: "A4" },
+  { note: "B4" }, { note: "C5" }
+];
 
-const selectNotas = document.getElementById("noteCount");
-const selectInstrumento = document.getElementById("instrument");
-const btnGenerar = document.getElementById("generate");
-const btnRepetir = document.getElementById("replay");
-const feedback = document.getElementById("feedback");
+const blackKeys = [
+  { note: "C#4", position: 1 },
+  { note: "D#4", position: 2 },
+  { note: "F#4", position: 4 },
+  { note: "G#4", position: 5 },
+  { note: "A#4", position: 6 }
+];
 
-async function inicializarAudio(nombreInstrumento = "acoustic_grand_piano") {
+async function initAudio() {
   if (!ac) {
     ac = new (window.AudioContext || window.webkitAudioContext)();
+    piano = await Soundfont.instrument(ac, 'acoustic_grand_piano');
   }
-  player = await Soundfont.instrument(ac, nombreInstrumento);
 }
 
-function generarMelodia(numNotas) {
-  const resultado = [];
-  for (let i = 0; i < numNotas; i++) {
-    const nota = notasDisponibles[Math.floor(Math.random() * notasDisponibles.length)];
-    resultado.push(nota);
-  }
-  return resultado;
-}
-
-function reproducirMelodia(melodia) {
-  if (!player) return;
-  let t = ac.currentTime;
-  melodia.forEach(nota => {
-    player.play(nota, t, { duration: duracionNota });
-    t += duracionNota;
+function playNote(note) {
+  initAudio().then(() => {
+    piano.play(note);
   });
 }
 
 function crearTeclado() {
   const contenedor = document.getElementById("keyboard");
-  contenedor.innerHTML = "";
-  notasDisponibles.forEach(nota => {
-    const btn = document.createElement("button");
-    btn.className = "key";
-    btn.textContent = nota;
-    btn.onclick = () => {
-      respuesta.push(nota);
-      if (respuesta.length === melodia.length) {
-        comprobarRespuesta();
-      }
-    };
-    contenedor.appendChild(btn);
+
+  whiteKeys.forEach((key, i) => {
+    const el = document.createElement("div");
+    el.className = "white";
+    el.addEventListener("click", () => playNote(key.note));
+    contenedor.appendChild(el);
+  });
+
+  blackKeys.forEach(key => {
+    const el = document.createElement("div");
+    el.className = "black";
+    el.style.left = `${key.position * 40 - 12.5}px`;
+    el.addEventListener("click", () => playNote(key.note));
+    contenedor.appendChild(el);
   });
 }
 
-function comprobarRespuesta() {
-  if (respuesta.join() === melodia.join()) {
-    feedback.textContent = "¡Correcto!";
-    feedback.className = "correct";
-  } else {
-    feedback.textContent = "Incorrecto. La melodía era: " + melodia.join(" ");
-    feedback.className = "incorrect";
-  }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  crearTeclado();
-
-  selectInstrumento.onchange = async () => {
-    if (ac) {
-      await inicializarAudio(selectInstrumento.value);
-    }
-  };
-
-  btnGenerar.onclick = async () => {
-    await inicializarAudio(selectInstrumento.value);
-    melodia = generarMelodia(parseInt(selectNotas.value));
-    respuesta = [];
-    feedback.textContent = "";
-    reproducirMelodia(melodia);
-    btnRepetir.disabled = false;
-  };
-
-  btnRepetir.onclick = () => {
-    if (melodia.length > 0) {
-      reproducirMelodia(melodia);
-    }
-  };
-});
+document.addEventListener("DOMContentLoaded", crearTeclado);
