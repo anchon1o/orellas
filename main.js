@@ -1,46 +1,52 @@
-const AudioContextFunc = window.AudioContext || window.webkitAudioContext;
-const audioContext = new AudioContextFunc();
-const player = new WebAudioFontPlayer();
-let instrument;
+const notas = [
+  { nota: "C4", freq: 261.63 },
+  { nota: "C#4", freq: 277.18 },
+  { nota: "D4", freq: 293.66 },
+  { nota: "D#4", freq: 311.13 },
+  { nota: "E4", freq: 329.63 },
+  { nota: "F4", freq: 349.23 },
+  { nota: "F#4", freq: 369.99 },
+  { nota: "G4", freq: 392.00 },
+  { nota: "G#4", freq: 415.30 },
+  { nota: "A4", freq: 440.00 },
+  { nota: "A#4", freq: 466.16 },
+  { nota: "B4", freq: 493.88 },
+  { nota: "C5", freq: 523.25 }
+];
 
-player.loader.startLoad(audioContext, "_tone_0000_Aspirin_sf2_file.js", "_tone_0000_Aspirin_sf2_file");
-player.loader.onload = () => {
-  instrument = player.loader.instrument("_tone_0000_Aspirin_sf2_file");
-};
+const blancas = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
+const negras = [
+  { nota: "C#4", pos: 1 },
+  { nota: "D#4", pos: 2 },
+  { nota: "F#4", pos: 4 },
+  { nota: "G#4", pos: 5 },
+  { nota: "A#4", pos: 6 }
+];
 
-function playNote(note) {
-  const midi = notaAMidi(note);
-  player.queueWaveTable(audioContext, audioContext.destination, instrument, audioContext.currentTime, midi, 1.5);
-}
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const ac = new AudioContext();
 
-function notaAMidi(nota) {
-  const mapa = {
-    C: 0, Cs: 1, D: 2, Ds: 3, E: 4,
-    F: 5, Fs: 6, G: 7, Gs: 8, A: 9, As: 10, B: 11
-  };
-  const letra = nota[0];
-  const sostenido = nota[1] === '#' || nota[1] === 's';
-  const octava = parseInt(nota[sostenido ? 2 : 1]);
-  const clave = sostenido ? letra + 's' : letra;
-  return 12 * (octava + 1) + mapa[clave];
+function playTone(frequency, duration = 1) {
+  const osc = ac.createOscillator();
+  const gain = ac.createGain();
+  osc.type = "sine";
+  osc.frequency.value = frequency;
+  osc.connect(gain);
+  gain.connect(ac.destination);
+  osc.start();
+  osc.stop(ac.currentTime + duration);
 }
 
 function crearTeclado() {
   const contenedor = document.getElementById("keyboard");
 
-  const blancas = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
-  const negras = [
-    { nota: "C#4", pos: 1 },
-    { nota: "D#4", pos: 2 },
-    { nota: "F#4", pos: 4 },
-    { nota: "G#4", pos: 5 },
-    { nota: "A#4", pos: 6 }
-  ];
-
   blancas.forEach(nota => {
     const el = document.createElement("div");
     el.className = "white";
-    el.onclick = () => playNote(nota);
+    el.onclick = () => {
+      const freq = notas.find(n => n.nota === nota).freq;
+      playTone(freq);
+    };
     contenedor.appendChild(el);
   });
 
@@ -48,7 +54,10 @@ function crearTeclado() {
     const el = document.createElement("div");
     el.className = "black";
     el.style.left = `${pos * 40 - 12.5}px`;
-    el.onclick = () => playNote(nota);
+    el.onclick = () => {
+      const freq = notas.find(n => n.nota === nota).freq;
+      playTone(freq);
+    };
     contenedor.appendChild(el);
   });
 }
