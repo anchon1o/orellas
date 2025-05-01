@@ -17,34 +17,48 @@ let serie = [];
 let respuesta = [];
 
 const ac = new (window.AudioContext || window.webkitAudioContext)();
-
-function reproducirNota(freq, dur = 0.6, t = 0) {
-  const osc = ac.createOscillator();
-  const gain = ac.createGain();
-  osc.type = "sine";
-  osc.frequency.value = freq;
-  osc.connect(gain);
-  gain.connect(ac.destination);
-  osc.start(ac.currentTime + t);
-  osc.stop(ac.currentTime + t + dur);
-}
+let osciladoresActivos = [];
+let reproduciendo = false;
 
 function reproducirSerie() {
+  detenerReproduccion();
+
   const nivel = parseInt(document.getElementById("nivel").value);
   respuesta = [];
   serie = [...notas].sort(() => Math.random() - 0.5).slice(0, nivel);
+  reproduciendo = true;
 
   for (let i = 0; i < serie.length; i++) {
-    reproducirNota(serie[i].freq, 0.6, i * 0.7);
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+    osc.type = "sine";
+    osc.frequency.value = serie[i].freq;
+    osc.connect(gain);
+    gain.connect(ac.destination);
+
+    const t = ac.currentTime + i * 0.7;
+    osc.start(t);
+    osc.stop(t + 0.6);
+
+    osciladoresActivos.push(osc);
   }
 
   document.getElementById("respuesta").textContent = "Introduce el orden:";
   document.getElementById("resultado").textContent = "";
 
-  // Reset estilos
   document.querySelectorAll('#botonera button').forEach(btn =>
     btn.classList.remove('correct', 'incorrect')
   );
+}
+
+function detenerReproduccion() {
+  osciladoresActivos.forEach(osc => {
+    try {
+      osc.stop();
+    } catch (e) {}
+  });
+  osciladoresActivos = [];
+  reproduciendo = false;
 }
 
 function crearBotones() {
@@ -104,4 +118,5 @@ function verificar() {
 }
 
 document.getElementById("start").onclick = reproducirSerie;
+document.getElementById("pause").onclick = detenerReproduccion;
 document.addEventListener("DOMContentLoaded", crearBotones);
