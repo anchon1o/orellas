@@ -134,6 +134,32 @@ function verificar() {
     resultado.innerHTML = `<div class="serie-correcta">Serie correcta: ${textoCorrecto}</div>`;
   }
 }
+function dibujarSerieEnPentagrama(notas) {
+  const VF = Vex.Flow;
+  const div = document.getElementById("pentagrama");
+  div.innerHTML = ""; // limpiar anteriores
+
+  const renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+  renderer.resize(500, 120);
+  const context = renderer.getContext();
+
+  const stave = new VF.Stave(10, 20, 480);
+  stave.addClef("treble").setContext(context).draw();
+
+  const notasVex = notas.map(n => {
+    const base = n.id[0];
+    const alteracion = n.id.includes("#") ? "#" : (n.id.includes("b") ? "b" : "");
+    const octava = n.id.slice(-1);
+    return new VF.StaveNote({ clef: "treble", keys: [`${base.toLowerCase()}/${octava}`], duration: "q" })
+      .addAccidental(0, alteracion ? new VF.Accidental(alteracion) : null);
+  });
+
+  const voice = new VF.Voice({ num_beats: notas.length, beat_value: 4 });
+  voice.addTickables(notasVex);
+
+  new VF.Formatter().joinVoices([voice]).format([voice], 450);
+  voice.draw(context, stave);
+}
 
 document.getElementById("start").onclick = reproducirSerie;
 document.getElementById("pause").onclick = detenerReproduccion;
