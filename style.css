@@ -93,6 +93,15 @@ label[for="nivel"] {
   background: #555;
 }
 
+/* Teclas fantasma (espacios entre teclas negras) */
+button.ghost {
+  background: transparent;
+  border: none;
+  cursor: default;
+  pointer-events: none;
+  visibility: hidden;
+}
+
 /* Feedback */
 button.correct {
   background: green !important;
