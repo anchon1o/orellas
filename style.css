@@ -201,7 +201,7 @@ input:checked + .slider::before {
 /* Respuesta y marcador */
 #respuesta {
   margin-top: 1.5rem;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   min-height: 1.2rem;
   line-height: 1.2;
   word-spacing: 0.4rem;
@@ -211,8 +211,8 @@ input:checked + .slider::before {
 
 #resultado {
   margin-top: 0.5rem;
-  font-weight: bold;
-  font-size: 1rem;
+  font-weight: 500;
+  font-size: 0.6rem;
   color: green;
 }
 
