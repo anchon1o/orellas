@@ -216,6 +216,10 @@ input:checked + .slider::before {
   color: green;
 }
 
+#partitura {
+  margin-top: 1rem;
+}
+
 #puntuacion {
   margin-top: 3rem;
   padding: 1rem;
