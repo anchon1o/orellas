@@ -1,1 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dictado Melódico - Orellas</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/soundfont-player@0.15.7/dist/soundfont-player.js"></script>
+  <script defer src="main.js"></script>
+</head>
+<body>
+  <h1>Dictado Melódico</h1>
 
+  <div>
+    <label for="noteCount">Número de notas:</label>
+    <select id="noteCount">
+      <option value="3">3</option>
+      <option value="4" selected>4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="instrument">Instrumento:</label>
+    <select id="instrument">
+      <option value="acoustic_grand_piano" selected>Piano</option>
+      <option value="oboe">Oboe</option>
+      <option value="flute">Flauta</option>
+      <option value="violin">Violín</option>
+      <option value="clarinet">Clarinete</option>
+    </select>
+  </div>
+
+  <div style="margin-top: 1rem;">
+    <button id="generate">Generar ejercicio</button>
+    <button id="replay" disabled>Escuchar de nuevo</button>
+  </div>
+
+  <div id="keyboard"></div>
+
+  <p id="feedback"></p>
+</body>
+</html>
