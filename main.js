@@ -167,17 +167,39 @@ function actualizarRespuesta() {
 function verificar() {
   const nivel = parseInt(document.getElementById("nivel").value);
   const resultado = document.getElementById("resultado");
+  const partitura = document.getElementById("partitura");
 
   const esPerfecto = respuesta.every((id, i) => id === serie[i].id);
 
   if (esPerfecto) {
     puntuacionTotal += nivel * 10;
     resultado.textContent = "✔ Correcto";
+    partitura.innerHTML = ""; // limpiar pentagrama anterior
   } else {
-    const solucionTexto = serie
-      .map(n => n.texto.replace(/<br>/g, "/"))
-      .join(" – ");
+    const solucionTexto = serie.map(n => n.texto.replace(/<br>/g, "/")).join(" – ");
     resultado.innerHTML = `<span style="color:red;">Solución: ${solucionTexto}</span>`;
+
+    // Mostrar serie en pentagrama con VexFlow
+    try {
+      partitura.innerHTML = "";
+      const VF = Vex.Flow;
+      const renderer = new VF.Renderer(partitura, VF.Renderer.Backends.SVG);
+      renderer.resize(400, 120);
+      const context = renderer.getContext();
+      const stave = new VF.Stave(10, 40, 380);
+      stave.addClef("treble").setContext(context).draw();
+
+      const notasVex = serie.map(n => {
+        const nombre = n.id[0].toLowerCase();
+        const alteracion = n.id.includes("#") ? "#" : "";
+        return new VF.StaveNote({ clef: "treble", keys: [`${nombre}${alteracion}/4`], duration: "q" })
+          .addAccidental(0, alteracion ? new VF.Accidental("#") : null);
+      });
+
+      VF.Formatter.FormatAndDraw(context, stave, notasVex);
+    } catch (e) {
+      console.warn("VexFlow no disponible o ha fallado:", e);
+    }
   }
 
   document.getElementById("valor-puntuacion").textContent = puntuacionTotal;
