@@ -24,8 +24,12 @@ h1 {
   margin-right: 0.3rem;
 }
 
-#nivel, #velocidad {
-  width: 150px;
+#nivel {
+  width: 120px;
+}
+
+#velocidad {
+  width: 50px;
 }
 
 /* Botones de reproducción */
