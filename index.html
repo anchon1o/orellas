@@ -11,29 +11,28 @@
   <h1>Serie Dodecafónica</h1>
 
   <div class="controles">
-    <label for="nivel">Nivel: <span id="nivel-valor">12</span></label>
-    <input type="range" id="nivel" min="1" max="12" value="12" />
+    <label for="nivel">Nivel: <span id="nivel-valor">6</span></label>
+    <input type="range" id="nivel" min="1" max="12" value="6" />
 
     <label for="velocidad">Velocidad: <span id="velocidad-valor">3</span></label>
     <input type="range" id="velocidad" min="1" max="5" value="3" />
   </div>
 
-  <br>
-
   <button id="start">Reproducir serie</button>
   <button id="pause">Pausar</button>
 
-  <!-- Teclas alteradas -->
+  <!-- Fila superior: teclas alteradas -->
   <div id="teclas-alteradas" class="fila-teclas"></div>
 
-  <!-- Teclas naturales -->
+  <!-- Fila inferior: teclas naturales -->
   <div id="teclas-naturales" class="fila-teclas"></div>
 
-  <!-- Respuesta y resultado -->
+  <!-- Resultado del usuario -->
   <div id="respuesta"></div>
   <p id="resultado"></p>
 
   <script>
+    // Actualización de etiquetas dinámicas
     document.getElementById("nivel").oninput = (e) =>
       document.getElementById("nivel-valor").textContent = e.target.value;
 
