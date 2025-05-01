@@ -143,20 +143,24 @@ function dibujarSerieEnPentagrama(notas) {
   stave.addClef("treble").setContext(context).draw();
 
   const notasVex = notas.map(n => {
-    const base = n.id[0];
-    const alteracion = n.id.includes("#") ? "#" : "";
-    const octava = n.id.slice(-1);
-    const key = `${base.toLowerCase()}/${octava}`;
+    const id = n.id;
+    const nota = id.slice(0, id.length - 1).toLowerCase();  // ej. c, c#, d, f#
+    const octava = id.slice(-1);
+    const key = `${nota}/${octava}`;  // ej. c#/4
+
     const note = new VF.StaveNote({
       clef: "treble",
       keys: [key],
       duration: "q"
     });
-    if (alteracion) {
-      note.addAccidental(0, new VF.Accidental(alteracion));
+
+    if (nota.includes("#")) {
+      note.addAccidental(0, new VF.Accidental("#"));
     }
+
     return note;
   });
+
   const voice = new VF.Voice({ num_beats: notas.length, beat_value: 4 });
   voice.addTickables(notasVex);
 
