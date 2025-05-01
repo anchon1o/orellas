@@ -51,7 +51,9 @@ function reproducirSerie() {
     osciladoresActivos.push(osc);
   }
 
-  document.getElementById("resultado").textContent = "";
+  document.getElementById("respuesta").innerHTML = "";
+  document.getElementById("resultado").innerHTML = "";
+  document.getElementById("pentagrama").innerHTML = "";
 
   document.querySelectorAll('button').forEach(btn =>
     btn.classList.remove('correct', 'incorrect')
@@ -114,32 +116,25 @@ function crearBotones() {
 }
 
 function actualizarRespuesta() {
-  const texto = respuesta.map(id => {
-    const nota = todasLasNotas.find(n => n.id === id);
-    return nota ? nota.texto.replace(/<br>/g, "/") : id;
-  }).join(" – ");
-  document.getElementById("respuesta").innerHTML = `<div class="respuesta-simple">${texto}</div>`;
+  document.getElementById("respuesta").innerHTML = "";
 }
 
 function verificar() {
   const nivel = parseInt(document.getElementById("nivel").value);
   const correcta = serie.map(n => n.id).join(",");
   const usuario = respuesta.join(",");
-  const resultado = document.getElementById("resultado");
 
-  if (usuario === correcta) {
-  resultado.innerHTML = `<div class="resultado-discreto correcto">✔ Correcto</div>`;
   document.getElementById("pentagrama").innerHTML = "";
-} else {
-  const textoCorrecto = serie.map(n => n.texto.replace(/<br>/g, "/")).join(" – ");
-  resultado.innerHTML = `<div class="serie-correcta">Serie correcta:</div>`;
-  dibujarSerieEnPentagrama(serie);
+
+  if (usuario !== correcta) {
+    dibujarSerieEnPentagrama(serie);
+  }
 }
-}
+
 function dibujarSerieEnPentagrama(notas) {
   const VF = Vex.Flow;
   const div = document.getElementById("pentagrama");
-  div.innerHTML = ""; // limpiar anteriores
+  div.innerHTML = "";
 
   const renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
   renderer.resize(500, 120);
@@ -150,10 +145,18 @@ function dibujarSerieEnPentagrama(notas) {
 
   const notasVex = notas.map(n => {
     const base = n.id[0];
-    const alteracion = n.id.includes("#") ? "#" : (n.id.includes("b") ? "b" : "");
+    const alteracion = n.id.includes("#") ? "#" : "";
     const octava = n.id.slice(-1);
-    return new VF.StaveNote({ clef: "treble", keys: [`${base.toLowerCase()}/${octava}`], duration: "q" })
-      .addAccidental(0, alteracion ? new VF.Accidental(alteracion) : null);
+    const key = `${base.toLowerCase()}/${octava}`;
+    const note = new VF.StaveNote({
+      clef: "treble",
+      keys: [key],
+      duration: "q"
+    });
+    if (alteracion) {
+      note.addAccidental(0, new VF.Accidental(alteracion));
+    }
+    return note;
   });
 
   const voice = new VF.Voice({ num_beats: notas.length, beat_value: 4 });
