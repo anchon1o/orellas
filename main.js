@@ -11,12 +11,13 @@ const notasNaturales = [
 const notasAlteradas = [
   { id: "C#4", texto: "Do♯<br>Re♭", freq: 277.18 },
   { id: "D#4", texto: "Re♯<br>Mi♭", freq: 311.13 },
-  { espacio: true },
+  { espacio: true }, // entre Re# y Fa#
   { id: "F#4", texto: "Fa♯<br>Sol♭", freq: 369.99 },
   { id: "G#4", texto: "Sol♯<br>La♭", freq: 415.30 },
   { id: "A#4", texto: "La♯<br>Si♭", freq: 466.16 }
 ];
 
+// Solo se incluyen notas reales (con id) en la serie
 const todasLasNotas = [...notasNaturales, ...notasAlteradas.filter(n => n.id)];
 
 let serie = [];
@@ -70,10 +71,11 @@ function crearBotones() {
   contenedorNaturales.innerHTML = "";
   contenedorAlteradas.innerHTML = "";
 
+  // Crear botón visible o fantasma
   const crear = (nota, contenedor, claseExtra = "") => {
     const btn = document.createElement("button");
     btn.innerHTML = nota.texto || "";
-    btn.classList.add(claseExtra);
+    if (claseExtra) btn.classList.add(claseExtra);
 
     if (nota.id) {
       btn.onclick = () => {
