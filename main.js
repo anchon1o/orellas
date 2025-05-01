@@ -51,7 +51,7 @@ function reproducirSerie() {
     osciladoresActivos.push(osc);
   }
 
-  document.getElementById("respuesta").textContent = "Introduce el orden:";
+  
   document.getElementById("resultado").textContent = "";
 
   document.querySelectorAll('button').forEach(btn =>
