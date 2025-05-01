@@ -177,7 +177,7 @@ function verificar() {
     partitura.innerHTML = ""; // limpiar pentagrama anterior
   } else {
     const solucionTexto = serie.map(n => n.texto.replace(/<br>/g, "/")).join(" – ");
-    resultado.innerHTML = `<span style="color:red;">Solución: ${solucionTexto}</span>`;
+    resultado.innerHTML = `<span style="color:green;">Solución: ${solucionTexto}</span>`;
 
     // Mostrar serie en pentagrama con VexFlow
     try {
