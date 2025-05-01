@@ -9,24 +9,31 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
-label[for="nivel"] {
-  display: inline-block;
-  margin-bottom: 0.5rem;
+.controles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 500px) {
+  .controles {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.controles label {
   font-weight: bold;
+  margin-right: 0.3rem;
 }
 
-#nivel {
-  width: 200px;
-  margin: 0.5rem auto 1rem;
-  display: block;
+#nivel, #velocidad {
+  width: 150px;
 }
 
-#nivel-valor {
-  font-weight: bold;
-  color: #0070f3;
-  margin-left: 0.4rem;
-}
-
+/* Botones de control */
 #start, #pause {
   background: #0070f3;
   color: white;
@@ -42,6 +49,7 @@ label[for="nivel"] {
   background: #005ad0;
 }
 
+/* Fila de teclas */
 .fila-teclas {
   display: flex;
   justify-content: center;
@@ -64,7 +72,7 @@ label[for="nivel"] {
   padding: 0.2rem;
 }
 
-/* Teclas naturales (blancas) */
+/* Teclas naturales */
 #teclas-naturales button {
   width: 40px;
   height: 40px;
@@ -78,7 +86,7 @@ label[for="nivel"] {
   color: white;
 }
 
-/* Teclas alteradas (negras) */
+/* Teclas alteradas */
 #teclas-alteradas button {
   width: 35px;
   height: 35px;
@@ -91,7 +99,7 @@ label[for="nivel"] {
   background: #555;
 }
 
-/* Tecla fantasma (espaciadora entre negras) */
+/* Tecla fantasma */
 button.ghost {
   background: transparent;
   border: none;
@@ -112,11 +120,12 @@ button.incorrect {
   color: white !important;
 }
 
-/* Texto respuesta */
+/* Texto de respuesta y resultado */
 #respuesta {
   margin-top: 2rem;
   font-weight: bold;
   font-size: 1rem;
+  min-height: 1.5em;
 }
 
 #resultado {
@@ -124,7 +133,7 @@ button.incorrect {
   margin-top: 1.5rem;
 }
 
-/* Estilo adaptable para pantallas grandes */
+/* Estilo adaptable a pantallas grandes */
 @media (min-width: 600px) {
   #teclas-naturales button {
     width: 50px;
