@@ -27,7 +27,7 @@ label[for="nivel"] {
   margin-left: 0.4rem;
 }
 
-#start {
+#start, #pause {
   background: #0070f3;
   color: white;
   padding: 0.6rem 1.2rem;
@@ -35,40 +35,65 @@ label[for="nivel"] {
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
-  margin-top: 1rem;
+  margin: 0.5rem 0.3rem;
 }
 
-#start:hover {
+#start:hover, #pause:hover {
   background: #005ad0;
 }
 
-#botonera {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.8rem;
-  max-width: 400px;
-  margin: 2rem auto 0;
+.fila-teclas {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.2rem;
+  flex-wrap: wrap;
 }
 
-#botonera button {
-  padding: 0.8rem;
-  font-size: 0.8rem;
-  background: white;
+.fila-teclas button {
   border: 2px solid #0070f3;
-  border-radius: 12px;
-  color: #0070f3;
+  border-radius: 10px;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   white-space: normal;
   line-height: 1.2;
-  text-align: center;
+  padding: 0.2rem;
 }
 
-#botonera button:hover {
+/* Tamaño base para móvil */
+
+/* Teclas naturales */
+#teclas-naturales button {
+  width: 40px;
+  height: 40px;
+  font-size: 0.75rem;
+  background: white;
+  color: #0070f3;
+}
+
+/* Teclas alteradas */
+#teclas-alteradas button {
+  width: 35px;
+  height: 35px;
+  font-size: 0.65rem;
+  background: #333;
+  color: white;
+}
+
+#teclas-naturales button:hover {
   background: #0070f3;
   color: white;
 }
 
+#teclas-alteradas button:hover {
+  background: #555;
+}
+
+/* Feedback */
 button.correct {
   background: green !important;
   color: white !important;
@@ -79,6 +104,7 @@ button.incorrect {
   color: white !important;
 }
 
+/* Texto respuesta */
 #respuesta {
   margin-top: 2rem;
   font-weight: bold;
@@ -87,5 +113,20 @@ button.incorrect {
 
 #resultado {
   font-size: 1.2rem;
-  margin-top: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+/* Adaptación a pantallas más grandes */
+@media (min-width: 600px) {
+  #teclas-naturales button {
+    width: 50px;
+    height: 50px;
+    font-size: 0.85rem;
+  }
+
+  #teclas-alteradas button {
+    width: 45px;
+    height: 45px;
+    font-size: 0.75rem;
+  }
 }
