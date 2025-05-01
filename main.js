@@ -11,13 +11,12 @@ const notasNaturales = [
 const notasAlteradas = [
   { id: "C#4", texto: "Do♯<br>Re♭", freq: 277.18 },
   { id: "D#4", texto: "Re♯<br>Mi♭", freq: 311.13 },
-  { espacio: true }, // entre Re# y Fa#
+  { espacio: true },
   { id: "F#4", texto: "Fa♯<br>Sol♭", freq: 369.99 },
   { id: "G#4", texto: "Sol♯<br>La♭", freq: 415.30 },
   { id: "A#4", texto: "La♯<br>Si♭", freq: 466.16 }
 ];
 
-// Solo se incluyen notas reales (con id) en la serie
 const todasLasNotas = [...notasNaturales, ...notasAlteradas.filter(n => n.id)];
 
 let serie = [];
@@ -30,6 +29,10 @@ function reproducirSerie() {
   detenerReproduccion();
 
   const nivel = parseInt(document.getElementById("nivel").value);
+  const velocidad = parseInt(document.getElementById("velocidad").value);
+  const intervalo = 1.4 - (velocidad * 0.2);  // velocidad 1 = lento, 5 = rápido
+  const duracion = intervalo * 0.9;
+
   respuesta = [];
   serie = [...todasLasNotas].sort(() => Math.random() - 0.5).slice(0, nivel);
 
@@ -41,9 +44,9 @@ function reproducirSerie() {
     osc.connect(gain);
     gain.connect(ac.destination);
 
-    const t = ac.currentTime + i * 0.7;
+    const t = ac.currentTime + i * intervalo;
     osc.start(t);
-    osc.stop(t + 0.6);
+    osc.stop(t + duracion);
 
     osciladoresActivos.push(osc);
   }
@@ -71,7 +74,6 @@ function crearBotones() {
   contenedorNaturales.innerHTML = "";
   contenedorAlteradas.innerHTML = "";
 
-  // Crear botón visible o fantasma
   const crear = (nota, contenedor, claseExtra = "") => {
     const btn = document.createElement("button");
     btn.innerHTML = nota.texto || "";
