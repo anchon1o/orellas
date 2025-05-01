@@ -149,29 +149,34 @@ button.incorrect {
 /* Texto de respuesta */
 #respuesta {
   margin-top: 2rem;
-  font-weight: 500;
-  font-size: 1rem;
   min-height: 1.5em;
+}
+
+.respuesta-simple {
+  font-size: 1rem;
+  font-weight: 500;
   color: #333;
 }
 
-#resultado {
-  margin-top: 0.6rem;
-  font-size: 0.95rem;
+.resultado-discreto {
+  font-size: 0.9rem;
   font-weight: 500;
+  margin-top: 0.5rem;
 }
 
-#resultado small {
+.resultado-discreto.correcto {
+  color: #4caf50;
+}
+
+.resultado-discreto.incorrecto {
+  color: #e53935;
+}
+
+.serie-correcta {
+  margin-top: 0.3rem;
   font-size: 0.8rem;
-  color: #666;
+  color: #777;
 }
-
-.correcto {
-  color: #2e7d32;
-}
-
-.incorrecto {
-  color: #c62828;
 }
 
 /* Pantallas grandes */
