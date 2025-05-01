@@ -1,4 +1,12 @@
-const ac = new AudioContext();
+let ac;
+let player;
+
+async function inicializarAudio(nombreInstrumento = "acoustic_grand_piano") {
+  if (!ac) {
+    ac = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  player = await Soundfont.instrument(ac, nombreInstrumento);
+}
 let player;
 let melodia = [];
 let respuesta = [];
@@ -70,13 +78,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     await cargarInstrumento(nombre);
   };
 
-  btnGenerar.onclick = async () => {
-    melodia = generarMelodia(parseInt(selectNotas.value));
-    respuesta = [];
-    feedback.textContent = "";
-    reproducirMelodia(melodia);
-    btnRepetir.disabled = false;
-  };
+  selectInstrumento.onchange = async () => {
+  if (ac) {
+    await inicializarAudio(selectInstrumento.value);
+  }
+};
 
   btnRepetir.onclick = () => {
     reproducirMelodia(melodia);
