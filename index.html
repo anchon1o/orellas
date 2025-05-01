@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <title>Entrenamiento auditivo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Serie Dodecafónica</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://unpkg.com/vexflow/releases/vexflow-min.js"></script>
+  <link rel="stylesheet" href="style.css">
   <script defer src="main.js"></script>
 </head>
 <body>
-  <h1>Serie Dodecafónica</h1>
+  <h1>Serie dodecafónica</h1>
+
+  <div id="puntuacion">Puntuación: <span id="valor-puntuacion">0</span></div>
 
   <div class="controles">
     <div class="control-slider">
       <label for="nivel">NIVEL</label>
-      <input type="range" id="nivel" min="1" max="12" value="6" />
+      <input type="range" id="nivel" min="1" max="12" value="6">
       <span id="nivel-valor">6</span>
     </div>
-
     <div class="control-slider">
       <label for="velocidad">VELOCIDAD</label>
-      <input type="range" id="velocidad" min="1" max="5" value="3" />
+      <input type="range" id="velocidad" min="1" max="5" value="3">
       <span id="velocidad-valor">3</span>
     </div>
   </div>
@@ -33,13 +33,12 @@
 
   <div id="respuesta"></div>
   <p id="resultado"></p>
-  <div id="pentagrama" style="margin-top: 1rem;"></div>
 
   <script>
-    document.getElementById("nivel").oninput = (e) =>
+    document.getElementById("nivel").oninput = e =>
       document.getElementById("nivel-valor").textContent = e.target.value;
 
-    document.getElementById("velocidad").oninput = (e) =>
+    document.getElementById("velocidad").oninput = e =>
       document.getElementById("velocidad-valor").textContent = e.target.value;
   </script>
 </body>
