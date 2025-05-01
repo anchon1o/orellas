@@ -174,7 +174,10 @@ function verificar() {
     puntuacionTotal += nivel * 10;
     resultado.textContent = "✔ Correcto";
   } else {
-    resultado.textContent = "";
+    const solucionTexto = serie
+      .map(n => n.texto.replace(/<br>/g, "/"))
+      .join(" – ");
+    resultado.innerHTML = `<span style="color:red;">Solución: ${solucionTexto}</span>`;
   }
 
   document.getElementById("valor-puntuacion").textContent = puntuacionTotal;
