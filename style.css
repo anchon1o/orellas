@@ -9,6 +9,26 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
+/* Selector de nivel */
+label[for="nivel"] {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+#nivel {
+  width: 200px;
+  margin: 0.5rem auto 1rem;
+  display: block;
+}
+
+#nivel-valor {
+  font-weight: bold;
+  color: #0070f3;
+  margin-left: 0.4rem;
+}
+
+/* Botón de reproducir */
 #start {
   background: #0070f3;
   color: white;
@@ -17,19 +37,20 @@ h1 {
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
-  margin-bottom: 1.5rem;
+  margin-top: 1rem;
 }
 
 #start:hover {
   background: #005ad0;
 }
 
+/* Botonera de notas */
 #botonera {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0.8rem;
   max-width: 400px;
-  margin: 0 auto;
+  margin: 2rem auto 0;
 }
 
 #botonera button {
@@ -48,16 +69,18 @@ h1 {
   color: white;
 }
 
+/* Feedback de respuesta */
 button.correct {
-  background: green;
-  color: white;
+  background: green !important;
+  color: white !important;
 }
 
 button.incorrect {
-  background: red;
-  color: white;
+  background: red !important;
+  color: white !important;
 }
 
+/* Texto respuesta y resultado */
 #respuesta {
   margin-top: 2rem;
   font-weight: bold;
