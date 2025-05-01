@@ -16,6 +16,14 @@ h1 {
 }
 
 /* Controles */
+
+.botones-control {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
 .controles {
   display: flex;
   justify-content: center;
