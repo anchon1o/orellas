@@ -116,12 +116,42 @@ function crearBotones() {
 }
 
 function actualizarRespuesta() {
-  document.getElementById("respuesta").innerHTML = "";
+  const nivel = parseInt(document.getElementById("nivel").value);
+  const contenedor = document.getElementById("respuesta");
+  contenedor.innerHTML = "";
+
+  const fragmento = document.createDocumentFragment();
+
+  respuesta.forEach((id, i) => {
+    const esperado = serie[i]?.id;
+    const nota = todasLasNotas.find(n => n.id === id);
+    const span = document.createElement("span");
+
+    span.textContent = nota ? nota.texto.replace(/<br>/g, "/") : id;
+
+    if (esperado && id !== esperado) {
+      span.style.color = "red";
+    } else {
+      span.style.color = "#333";
+    }
+
+    span.style.marginRight = "0.4rem";
+    fragmento.appendChild(span);
+  });
+
+  contenedor.appendChild(fragmento);
 }
 
 function verificar() {
-  document.getElementById("pentagrama").innerHTML = "";
-  dibujarSerieEnPentagrama(serie);
+  const contenedor = document.getElementById("resultado");
+  const correcta = serie.map(n => n.id).join(",");
+  const usuario = respuesta.join(",");
+
+  if (usuario === correcta) {
+    contenedor.innerHTML = `<div style="color: green; font-weight: bold;">✔ Correcto</div>`;
+  } else {
+    contenedor.innerHTML = "";
+  }
 }
 
 function dibujarSerieEnPentagrama(notas) {
