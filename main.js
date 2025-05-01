@@ -1,52 +1,54 @@
-let ac = null;
-let piano = null;
-let cargando = false;
+const AudioContextFunc = window.AudioContext || window.webkitAudioContext;
+const audioContext = new AudioContextFunc();
+const player = new WebAudioFontPlayer();
+let instrument;
 
-async function playNote(note) {
-  if (!ac) {
-    ac = new (window.AudioContext || window.webkitAudioContext)();
-  }
+player.loader.startLoad(audioContext, "_tone_0000_Aspirin_sf2_file.js", "_tone_0000_Aspirin_sf2_file");
+player.loader.onload = () => {
+  instrument = player.loader.instrument("_tone_0000_Aspirin_sf2_file");
+};
 
-  if (!piano && !cargando) {
-    cargando = true;
-    piano = await Soundfont.instrument(ac, 'acoustic_grand_piano');
-    cargando = false;
-  }
+function playNote(note) {
+  const midi = notaAMidi(note);
+  player.queueWaveTable(audioContext, audioContext.destination, instrument, audioContext.currentTime, midi, 1.5);
+}
 
-  if (piano) {
-    piano.play(note);
-  }
+function notaAMidi(nota) {
+  const mapa = {
+    C: 0, Cs: 1, D: 2, Ds: 3, E: 4,
+    F: 5, Fs: 6, G: 7, Gs: 8, A: 9, As: 10, B: 11
+  };
+  const letra = nota[0];
+  const sostenido = nota[1] === '#' || nota[1] === 's';
+  const octava = parseInt(nota[sostenido ? 2 : 1]);
+  const clave = sostenido ? letra + 's' : letra;
+  return 12 * (octava + 1) + mapa[clave];
 }
 
 function crearTeclado() {
   const contenedor = document.getElementById("keyboard");
 
-  const whiteKeys = [
-    { note: "C4" }, { note: "D4" }, { note: "E4" },
-    { note: "F4" }, { note: "G4" }, { note: "A4" },
-    { note: "B4" }, { note: "C5" }
+  const blancas = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
+  const negras = [
+    { nota: "C#4", pos: 1 },
+    { nota: "D#4", pos: 2 },
+    { nota: "F#4", pos: 4 },
+    { nota: "G#4", pos: 5 },
+    { nota: "A#4", pos: 6 }
   ];
 
-  const blackKeys = [
-    { note: "C#4", position: 1 },
-    { note: "D#4", position: 2 },
-    { note: "F#4", position: 4 },
-    { note: "G#4", position: 5 },
-    { note: "A#4", position: 6 }
-  ];
-
-  whiteKeys.forEach((key, i) => {
+  blancas.forEach(nota => {
     const el = document.createElement("div");
     el.className = "white";
-    el.addEventListener("click", () => playNote(key.note));
+    el.onclick = () => playNote(nota);
     contenedor.appendChild(el);
   });
 
-  blackKeys.forEach(key => {
+  negras.forEach(({ nota, pos }) => {
     const el = document.createElement("div");
     el.className = "black";
-    el.style.left = `${key.position * 40 - 12.5}px`;
-    el.addEventListener("click", () => playNote(key.note));
+    el.style.left = `${pos * 40 - 12.5}px`;
+    el.onclick = () => playNote(nota);
     contenedor.appendChild(el);
   });
 }
