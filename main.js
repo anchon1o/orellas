@@ -157,7 +157,6 @@ function dibujarSerieEnPentagrama(notas) {
     }
     return note;
   });
-
   const voice = new VF.Voice({ num_beats: notas.length, beat_value: 4 });
   voice.addTickables(notasVex);
 
