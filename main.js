@@ -19,10 +19,13 @@ const notasAlteradas = [
 
 const todasLasNotas = [...notasNaturales, ...notasAlteradas.filter(n => n.id)];
 
+let usarOctavaSuperior = false;
+let usarOctavaInferior = false;
 let serie = [];
 let respuesta = [];
 let osciladoresActivos = [];
 let puntuacionTotal = 0;
+
 
 const ac = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -39,19 +42,24 @@ function reproducirSerie() {
 serie = [...disponibles].sort(() => Math.random() - 0.5).slice(0, nivel);
 
   for (let i = 0; i < serie.length; i++) {
-    const osc = ac.createOscillator();
-    const gain = ac.createGain();
-    osc.type = "sine";
-    osc.frequency.value = serie[i].freq;
-    osc.connect(gain);
-    gain.connect(ac.destination);
+  const osc = ac.createOscillator();
+  const gain = ac.createGain();
+  osc.type = "sine";
 
-    const t = ac.currentTime + i * intervalo;
-    osc.start(t);
-    osc.stop(t + duracion);
+  let freq = serie[i].freq;
+  if (usarOctavaSuperior && Math.random() < 0.5) freq *= 2;
+  if (usarOctavaInferior && Math.random() < 0.5) freq /= 2;
+  osc.frequency.value = freq;
 
-    osciladoresActivos.push(osc);
-  }
+  osc.connect(gain);
+  gain.connect(ac.destination);
+
+  const t = ac.currentTime + i * intervalo;
+  osc.start(t);
+  osc.stop(t + duracion);
+
+  osciladoresActivos.push(osc);
+}
 
   document.getElementById("respuesta").innerHTML = "";
   document.getElementById("resultado").innerHTML = "";
@@ -187,6 +195,13 @@ document.getElementById("solo-naturales").addEventListener("change", e => {
   crearBotones();
 });
 
+document.getElementById("octava-superior").addEventListener("change", e => {
+  usarOctavaSuperior = e.target.checked;
+});
+
+document.getElementById("octava-inferior").addEventListener("change", e => {
+  usarOctavaInferior = e.target.checked;
+});
 document.getElementById("start").onclick = reproducirSerie;
 document.getElementById("pause").onclick = detenerReproduccion;
 document.addEventListener("DOMContentLoaded", crearBotones);
