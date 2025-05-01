@@ -10,16 +10,22 @@
 <body>
   <h1>Serie Dodecafónica</h1>
 
-  <div class="controles">
-    <label for="nivel">Nivel: <span id="nivel-valor">6</span></label>
+ <div class="controles">
+  <div class="control-slider">
+    <label for="nivel">NIVEL</label>
     <input type="range" id="nivel" min="1" max="12" value="6" />
-
-    <label for="velocidad">Velocidad: <span id="velocidad-valor">3</span></label>
-    <input type="range" id="velocidad" min="1" max="5" value="3" />
+    <span id="nivel-valor">6</span>
   </div>
 
+  <div class="control-slider">
+    <label for="velocidad">VELOCIDAD</label>
+    <input type="range" id="velocidad" min="1" max="5" value="3" />
+    <span id="velocidad-valor">3</span>
+  </div>
+</div>
+
   <button id="start">Reproducir serie</button>
-  <button id="pause">Pausar</button>
+  <button id="pause">Parar</button>
 
   <!-- Fila superior: teclas alteradas -->
   <div id="teclas-alteradas" class="fila-teclas"></div>
