@@ -18,7 +18,7 @@ let respuesta = [];
 
 const ac = new (window.AudioContext || window.webkitAudioContext)();
 
-function reproducirNota(freq, dur = 0.7, t = 0) {
+function reproducirNota(freq, dur = 0.6, t = 0) {
   const osc = ac.createOscillator();
   const gain = ac.createGain();
   osc.type = "sine";
@@ -30,13 +30,21 @@ function reproducirNota(freq, dur = 0.7, t = 0) {
 }
 
 function reproducirSerie() {
+  const nivel = parseInt(document.getElementById("nivel").value);
   respuesta = [];
-  serie = [...notas].sort(() => Math.random() - 0.5);
+  serie = [...notas].sort(() => Math.random() - 0.5).slice(0, nivel);
+
   for (let i = 0; i < serie.length; i++) {
     reproducirNota(serie[i].freq, 0.6, i * 0.7);
   }
+
   document.getElementById("respuesta").textContent = "Introduce el orden:";
   document.getElementById("resultado").textContent = "";
+
+  // Limpiar feedback de botones
+  document.querySelectorAll('#botonera button').forEach(btn =>
+    btn.classList.remove('correct', 'incorrect')
+  );
 }
 
 function crearBotones() {
@@ -47,11 +55,21 @@ function crearBotones() {
     const btn = document.createElement("button");
     btn.textContent = nota.nombre;
     btn.onclick = () => {
+      const nivel = parseInt(document.getElementById("nivel").value);
+      if (respuesta.length >= nivel) return;
+
       respuesta.push(nota.nombre);
       actualizarRespuesta();
-      verificar();
-      btn.classList.add('incorrect'); // Añadimos la clase incorrect por defecto
-      if (respuesta.length === 12) {
+
+      const index = respuesta.length - 1;
+      const esperado = serie[index].nombre;
+      if (nota.nombre === esperado) {
+        btn.classList.add("correct");
+      } else {
+        btn.classList.add("incorrect");
+      }
+
+      if (respuesta.length === nivel) {
         verificar();
       }
     };
@@ -68,19 +86,6 @@ function verificar() {
   const correcta = serie.map(n => n.nombre).join(",");
   const usuario = respuesta.join(",");
   const resultado = document.getElementById("resultado");
-
-  // Limpiar colores de los botones antes de verificar
-  const botones = document.querySelectorAll('#botonera button');
-  botones.forEach(btn => btn.classList.remove('correct', 'incorrect'));
-
-  // Verificar cada botón presionado y cambiar color
-  respuesta.forEach((respuestaNota, index) => {
-    if (respuestaNota === serie[index].nombre) {
-      botones[index].classList.add('correct');
-    } else {
-      botones[index].classList.add('incorrect');
-    }
-  });
 
   if (usuario === correcta) {
     resultado.textContent = "¡Correcto!";
