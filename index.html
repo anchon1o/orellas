@@ -10,31 +10,35 @@
 <body>
   <h1>Serie Dodecafónica</h1>
 
-  <label for="nivel">Nivel: <span id="nivel-valor">12</span></label>
-  <input type="range" id="nivel" min="1" max="12" value="12" />
+  <div class="controles">
+    <label for="nivel">Nivel: <span id="nivel-valor">12</span></label>
+    <input type="range" id="nivel" min="1" max="12" value="12" />
 
-  <br><br>
+    <label for="velocidad">Velocidad: <span id="velocidad-valor">3</span></label>
+    <input type="range" id="velocidad" min="1" max="5" value="3" />
+  </div>
+
+  <br>
 
   <button id="start">Reproducir serie</button>
   <button id="pause">Pausar</button>
 
-
-
-  <!-- Fila superior: teclas alteradas -->
+  <!-- Teclas alteradas -->
   <div id="teclas-alteradas" class="fila-teclas"></div>
 
-  <!-- Fila inferior: teclas naturales -->
+  <!-- Teclas naturales -->
   <div id="teclas-naturales" class="fila-teclas"></div>
- 
+
+  <!-- Respuesta y resultado -->
   <div id="respuesta"></div>
   <p id="resultado"></p>
 
   <script>
-    const slider = document.getElementById("nivel");
-    const output = document.getElementById("nivel-valor");
-    slider.oninput = () => {
-      output.textContent = slider.value;
-    };
+    document.getElementById("nivel").oninput = (e) =>
+      document.getElementById("nivel-valor").textContent = e.target.value;
+
+    document.getElementById("velocidad").oninput = (e) =>
+      document.getElementById("velocidad-valor").textContent = e.target.value;
   </script>
 </body>
 </html>
