@@ -126,9 +126,8 @@ function verificar() {
 
   document.getElementById("pentagrama").innerHTML = "";
 
-  if (usuario !== correcta) {
-    dibujarSerieEnPentagrama(serie);
-  }
+  dibujarSerieEnPentagrama(serie);
+  
 }
 
 function dibujarSerieEnPentagrama(notas) {
