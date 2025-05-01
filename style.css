@@ -59,15 +59,15 @@ h1 {
 .fila-teclas button {
   width: 42px;
   height: 42px;
-  font-size: 0.75rem;
-  border-radius: 8px;
-  border: 2px solid #0070f3;
-  font-family: 'Montserrat', sans-serif;
+  font-size: 0.6rem;
+  line-height: 1.1;
+  padding: 0;
   font-weight: 600;
-  background-color: white;
-  color: #0070f3;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  white-space: normal;
 }
 
 .ghost {
