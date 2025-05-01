@@ -2,14 +2,26 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teclado Virtual</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Prueba de Sonido</title>
   <script src="https://unpkg.com/soundfont-player@0.15.7/dist/soundfont-player.js"></script>
-  <script defer src="main.js"></script>
 </head>
 <body>
-  <h1>Teclado Virtual</h1>
-  <div class="keyboard" id="keyboard"></div>
+  <h1>Prueba de sonido: Piano C4</h1>
+  <button id="play">Tocar nota C4</button>
+
+  <script>
+    let ac;
+    let piano;
+
+    document.getElementById("play").onclick = async () => {
+      if (!ac) {
+        ac = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (!piano) {
+        piano = await Soundfont.instrument(ac, 'acoustic_grand_piano');
+      }
+      piano.play('C4');
+    };
+  </script>
 </body>
 </html>
