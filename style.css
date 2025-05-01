@@ -153,19 +153,26 @@ button.incorrect {
 }
 
 .respuesta-simple {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #333;
-}
-
-.resultado-discreto {
   font-size: 0.9rem;
   font-weight: 500;
-  margin-top: 0.5rem;
+  color: #444;
+  margin-top: 1rem;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+.serie-correcta {
+  font-size: 0.8rem;
+  color: #777;
+  margin-top: 0.4rem;
+  white-space: nowrap;
+  overflow-x: auto;
 }
 
 .resultado-discreto.correcto {
+  font-size: 0.9rem;
   color: #4caf50;
+  margin-top: 0.6rem;
 }
 
 .resultado-discreto.incorrecto {
