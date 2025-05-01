@@ -53,10 +53,10 @@ button {
 }
 
 .slider {
-  width: 42px;
-  height: 22px;
+  width: 38px;
+  height: 18px;
   background-color: #ccc;
-  border-radius: 22px;
+  border-radius: 18px;
   position: relative;
   transition: background-color 0.3s ease;
 }
@@ -64,8 +64,8 @@ button {
 .slider::before {
   content: "";
   position: absolute;
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   left: 2px;
   top: 2px;
   background-color: white;
