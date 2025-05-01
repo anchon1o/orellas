@@ -59,9 +59,9 @@ button {
 .switch {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.3rem;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   cursor: pointer;
 }
 
