@@ -1,27 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>Prueba de Sonido</title>
-  <script src="https://unpkg.com/soundfont-player@0.15.7/dist/soundfont-player.js"></script>
-</head>
+<head><meta charset="UTF-8"><title>Web Audio API Test</title></head>
 <body>
-  <h1>Prueba de sonido: Piano C4</h1>
-  <button id="play">Tocar nota C4</button>
+  <h1>Prueba de Web Audio API</h1>
+  <button onclick="playTone()">Tocar tono puro</button>
 
   <script>
-    let ac;
-    let piano;
-
-    document.getElementById("play").onclick = async () => {
-      if (!ac) {
-        ac = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (!piano) {
-        piano = await Soundfont.instrument(ac, 'acoustic_grand_piano');
-      }
-      piano.play('C4');
-    };
+    function playTone() {
+      const ac = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ac.createOscillator();
+      const gain = ac.createGain();
+      osc.type = "sine";
+      osc.frequency.value = 440;
+      osc.connect(gain);
+      gain.connect(ac.destination);
+      osc.start();
+      osc.stop(ac.currentTime + 1);
+    }
   </script>
 </body>
 </html>
