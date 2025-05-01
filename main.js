@@ -1,16 +1,16 @@
 const notas = [
-  { nombre: "C4", freq: 261.63 },
-  { nombre: "C#4", freq: 277.18 },
-  { nombre: "D4", freq: 293.66 },
-  { nombre: "D#4", freq: 311.13 },
-  { nombre: "E4", freq: 329.63 },
-  { nombre: "F4", freq: 349.23 },
-  { nombre: "F#4", freq: 369.99 },
-  { nombre: "G4", freq: 392.00 },
-  { nombre: "G#4", freq: 415.30 },
-  { nombre: "A4", freq: 440.00 },
-  { nombre: "A#4", freq: 466.16 },
-  { nombre: "B4", freq: 493.88 }
+  { nombre: "Do", freq: 261.63 },
+  { nombre: "Do#", freq: 277.18 },
+  { nombre: "Re", freq: 293.66 },
+  { nombre: "Re#", freq: 311.13 },
+  { nombre: "Mi", freq: 329.63 },
+  { nombre: "Fa", freq: 349.23 },
+  { nombre: "Fa#", freq: 369.99 },
+  { nombre: "Sol", freq: 392.00 },
+  { nombre: "Sol#", freq: 415.30 },
+  { nombre: "La", freq: 440.00 },
+  { nombre: "La#", freq: 466.16 },
+  { nombre: "Si", freq: 493.88 }
 ];
 
 let serie = [];
@@ -49,6 +49,8 @@ function crearBotones() {
     btn.onclick = () => {
       respuesta.push(nota.nombre);
       actualizarRespuesta();
+      verificar();
+      btn.classList.add('incorrect'); // Añadimos la clase incorrect por defecto
       if (respuesta.length === 12) {
         verificar();
       }
@@ -66,6 +68,19 @@ function verificar() {
   const correcta = serie.map(n => n.nombre).join(",");
   const usuario = respuesta.join(",");
   const resultado = document.getElementById("resultado");
+
+  // Limpiar colores de los botones antes de verificar
+  const botones = document.querySelectorAll('#botonera button');
+  botones.forEach(btn => btn.classList.remove('correct', 'incorrect'));
+
+  // Verificar cada botón presionado y cambiar color
+  respuesta.forEach((respuestaNota, index) => {
+    if (respuestaNota === serie[index].nombre) {
+      botones[index].classList.add('correct');
+    } else {
+      botones[index].classList.add('incorrect');
+    }
+  });
 
   if (usuario === correcta) {
     resultado.textContent = "¡Correcto!";
