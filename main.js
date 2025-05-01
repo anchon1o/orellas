@@ -118,8 +118,8 @@ function actualizarRespuesta() {
   const texto = respuesta.map(id => {
     const nota = todasLasNotas.find(n => n.id === id);
     return nota ? nota.texto.replace(/<br>/g, "/") : id;
-  }).join(" - ");
-  document.getElementById("respuesta").textContent = "Tu respuesta: " + texto;
+  }).join(" – ");
+  document.getElementById("respuesta").textContent = texto;
 }
 
 function verificar() {
@@ -129,12 +129,13 @@ function verificar() {
   const resultado = document.getElementById("resultado");
 
   if (usuario === correcta) {
-    resultado.textContent = "¡Correcto!";
-    resultado.style.color = "green";
+    resultado.innerHTML = `<span class="correcto">¡Correcto!</span>`;
   } else {
-    const textoCorrecto = serie.map(n => n.texto.replace(/<br>/g, "/")).join(" - ");
-    resultado.textContent = "Incorrecto. La serie era: " + textoCorrecto;
-    resultado.style.color = "red";
+    const textoCorrecto = serie.map(n => n.texto.replace(/<br>/g, "/")).join(" – ");
+    resultado.innerHTML = `
+      <span class="incorrecto">Incorrecto</span><br>
+      <small>La serie correcta era:<br>${textoCorrecto}</small>
+    `;
   }
 }
 
