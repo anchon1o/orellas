@@ -120,12 +120,7 @@ function actualizarRespuesta() {
 }
 
 function verificar() {
-  const nivel = parseInt(document.getElementById("nivel").value);
-  respuesta.join(","); // simplemente para completar la lógica
-
-  document.getElementById("resultado").innerHTML = "";
   document.getElementById("pentagrama").innerHTML = "";
-
   dibujarSerieEnPentagrama(serie);
 }
 
@@ -143,20 +138,17 @@ function dibujarSerieEnPentagrama(notas) {
 
   const notasVex = notas.map(n => {
     const id = n.id;
-    const nota = id.slice(0, id.length - 1).toLowerCase();  // ej. c, c#, d, f#
+    const nota = id.slice(0, id.length - 1).toLowerCase(); // ej. c, c#
     const octava = id.slice(-1);
-    const key = `${nota}/${octava}`;  // ej. c#/4
-
+    const key = `${nota}/${octava}`;
     const note = new VF.StaveNote({
       clef: "treble",
       keys: [key],
       duration: "q"
     });
-
     if (nota.includes("#")) {
       note.addAccidental(0, new VF.Accidental("#"));
     }
-
     return note;
   });
 
