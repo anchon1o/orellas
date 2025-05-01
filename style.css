@@ -39,6 +39,15 @@ h1 {
   font-size: 0.9rem;
 }
 
+.control-select {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
 button {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
