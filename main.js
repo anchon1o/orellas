@@ -121,13 +121,12 @@ function actualizarRespuesta() {
 
 function verificar() {
   const nivel = parseInt(document.getElementById("nivel").value);
-  const correcta = serie.map(n => n.id).join(",");
-  const usuario = respuesta.join(",");
+  respuesta.join(","); // simplemente para completar la lógica
 
+  document.getElementById("resultado").innerHTML = "";
   document.getElementById("pentagrama").innerHTML = "";
 
   dibujarSerieEnPentagrama(serie);
-  
 }
 
 function dibujarSerieEnPentagrama(notas) {
