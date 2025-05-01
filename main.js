@@ -23,7 +23,6 @@ let serie = [];
 let respuesta = [];
 let osciladoresActivos = [];
 let puntuacionTotal = 0;
-let rachaPerfecta = 0;
 
 const ac = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -83,6 +82,7 @@ function crearBotones() {
     if (nota.id) {
       btn.onclick = () => {
         const nivel = parseInt(document.getElementById("nivel").value);
+        const velocidad = parseInt(document.getElementById("velocidad").value);
         if (respuesta.length >= nivel) return;
 
         respuesta.push(nota.id);
@@ -90,11 +90,25 @@ function crearBotones() {
 
         const index = respuesta.length - 1;
         const esperado = serie[index].id;
+
+        const multiplicadores = {
+          1: 0.8,
+          2: 0.9,
+          3: 1.0,
+          4: 1.1,
+          5: 1.2
+        };
+        const multiplicador = multiplicadores[velocidad] || 1;
+
         if (nota.id === esperado) {
+          puntuacionTotal += Math.round(10 * multiplicador);
           btn.classList.add("correct");
         } else {
+          puntuacionTotal = Math.floor(puntuacionTotal / 2);
           btn.classList.add("incorrect");
         }
+
+        document.getElementById("valor-puntuacion").textContent = puntuacionTotal;
 
         if (respuesta.length === nivel) {
           verificar();
@@ -139,55 +153,18 @@ function actualizarRespuesta() {
 
 function verificar() {
   const nivel = parseInt(document.getElementById("nivel").value);
-  const velocidad = parseInt(document.getElementById("velocidad").value);
   const resultado = document.getElementById("resultado");
 
-  let puntos = 0;
-  let errores = 0;
+  const esPerfecto = respuesta.every((id, i) => id === serie[i].id);
 
-  // 1. Calcular puntos por aciertos y errores
-  respuesta.forEach((id, i) => {
-    if (serie[i]?.id === id) {
-      puntos += 100;
-    } else {
-      errores++;
-    }
-  });
-
-  // 2. Bonus por ejercicio perfecto
-  let esPerfecto = errores === 0;
   if (esPerfecto) {
-    puntos += 100 * nivel;
-    rachaPerfecta++;
+    puntuacionTotal += nivel * 10;
+    resultado.textContent = "✔ Correcto";
   } else {
-    rachaPerfecta = 0;
+    resultado.textContent = "";
   }
 
-  // 3. Penalización por errores
-  puntos -= errores * 50;
-
-  // 4. Multiplicador por velocidad
-  const multiplicadores = {
-    1: 0.8,
-    2: 0.9,
-    3: 1.0,
-    4: 1.1,
-    5: 1.2
-  };
-  const factorVelocidad = multiplicadores[velocidad] || 1;
-  puntos = Math.round(puntos * factorVelocidad);
-
-  // 5. Multiplicador por racha perfecta
-  if (esPerfecto && rachaPerfecta > 1) {
-    puntuacionTotal *= rachaPerfecta;
-  }
-
-  // 6. Sumar puntos al total acumulado
-  puntuacionTotal += puntos;
-
-  // 7. Actualizar marcador y mensaje
   document.getElementById("valor-puntuacion").textContent = puntuacionTotal;
-  resultado.textContent = esPerfecto ? "✔ Correcto" : "";
 }
 
 document.getElementById("start").onclick = reproducirSerie;
