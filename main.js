@@ -139,11 +139,13 @@ function actualizarRespuesta() {
 
 function verificar() {
   const nivel = parseInt(document.getElementById("nivel").value);
+  const velocidad = parseInt(document.getElementById("velocidad").value);
   const resultado = document.getElementById("resultado");
 
   let puntos = 0;
   let errores = 0;
 
+  // 1. Calcular puntos por aciertos y errores
   respuesta.forEach((id, i) => {
     if (serie[i]?.id === id) {
       puntos += 100;
@@ -152,20 +154,40 @@ function verificar() {
     }
   });
 
-  if (errores === 0) {
+  // 2. Bonus por ejercicio perfecto
+  let esPerfecto = errores === 0;
+  if (esPerfecto) {
     puntos += 100 * nivel;
     rachaPerfecta++;
-    if (rachaPerfecta > 1) {
-      puntuacionTotal *= rachaPerfecta;
-    }
   } else {
-    puntos -= errores * 50;
     rachaPerfecta = 0;
   }
 
+  // 3. Penalización por errores
+  puntos -= errores * 50;
+
+  // 4. Multiplicador por velocidad
+  const multiplicadores = {
+    1: 0.8,
+    2: 0.9,
+    3: 1.0,
+    4: 1.1,
+    5: 1.2
+  };
+  const factorVelocidad = multiplicadores[velocidad] || 1;
+  puntos = Math.round(puntos * factorVelocidad);
+
+  // 5. Multiplicador por racha perfecta
+  if (esPerfecto && rachaPerfecta > 1) {
+    puntuacionTotal *= rachaPerfecta;
+  }
+
+  // 6. Sumar puntos al total acumulado
   puntuacionTotal += puntos;
+
+  // 7. Actualizar marcador y mensaje
   document.getElementById("valor-puntuacion").textContent = puntuacionTotal;
-  resultado.textContent = errores === 0 ? "✔ Correcto" : "";
+  resultado.textContent = esPerfecto ? "✔ Correcto" : "";
 }
 
 document.getElementById("start").onclick = reproducirSerie;
