@@ -1,22 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
 body {
   font-family: 'Montserrat', sans-serif;
   text-align: center;
   padding: 2rem;
-  background: #f0f0f0;
+  background: #f9f9f9;
+  color: #333;
 }
 
 h1 {
-  font-size: 1.5rem;
-  margin-bottom: 1.2rem;
-  font-weight: 600;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
 }
 
 .controles {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  flex-wrap: nowrap;
+  gap: 2rem;
   margin-bottom: 1rem;
 }
 
@@ -24,138 +26,88 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.control-slider label {
-  margin-bottom: 0.2rem;
-  font-weight: bold;
+  font-weight: 500;
   font-size: 0.9rem;
-}
-
-#nivel {
-  width: 120px !important;
-}
-
-#velocidad {
-  width: 50px !important;
-}
-
-#nivel-valor,
-#velocidad-valor {
-  margin-top: 0.3rem;
-  font-weight: bold;
-  font-size: 0.9rem;
-  color: #0070f3;
 }
 
 #start, #pause {
-  background: #0070f3;
-  color: white;
+  margin: 0.5rem;
   padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background-color: #0070f3;
+  color: white;
   border: none;
   border-radius: 6px;
-  font-size: 1rem;
   cursor: pointer;
-  margin: 0.5rem 0.3rem;
-  font-weight: 600;
+  transition: background 0.2s;
+  font-family: 'Montserrat', sans-serif;
 }
 
 #start:hover, #pause:hover {
-  background: #005ad0;
+  background-color: #0059c9;
 }
 
 .fila-teclas {
   display: flex;
   justify-content: center;
   gap: 0.4rem;
+  margin-top: 1rem;
   flex-wrap: nowrap;
 }
 
-#teclas-alteradas {
-  margin-top: 1.2rem;
-}
-
-#teclas-naturales {
-  margin-top: 0.4rem;
-}
-
 .fila-teclas button {
-  border: 2px solid #0070f3;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  white-space: normal;
-  line-height: 1.2;
-  padding: 0.2rem;
-}
-
-#teclas-naturales button {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   font-size: 0.75rem;
-  background: white;
-  color: #0070f3;
+  border-radius: 8px;
+  border: 2px solid #0070f3;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 600;
+  background-color: white;
+  color: #0070f3;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-#teclas-alteradas button {
-  width: 35px;
-  height: 35px;
-  font-size: 0.65rem;
-  background: #333;
-  color: white;
-  font-weight: 500;
-}
-
-button.ghost {
+.ghost {
   background: transparent;
   border: none;
   visibility: hidden;
   pointer-events: none;
-  width: 35px;
-  height: 35px;
 }
 
-button.correct {
-  background: green !important;
-  color: white !important;
+.correct {
+  background-color: green;
+  color: white;
 }
 
-button.incorrect {
-  background: red !important;
-  color: white !important;
+.incorrect {
+  background-color: red;
+  color: white;
 }
 
 #respuesta {
   margin-top: 2rem;
-  min-height: 1.5em;
+  font-size: 1rem;
+  min-height: 1.2rem;
 }
 
 #resultado {
-  margin-top: 0.6rem;
-  font-size: 0.95rem;
-  font-weight: 500;
+  margin-top: 0.5rem;
+  font-weight: bold;
+  font-size: 1rem;
+  color: green;
 }
 
-@media (min-width: 600px) {
-  #teclas-naturales button {
-    width: 50px;
-    height: 50px;
-    font-size: 0.85rem;
-  }
-
-  #teclas-alteradas button {
-    width: 45px;
-    height: 45px;
-    font-size: 0.75rem;
-  }
-
-  button.ghost {
-    width: 45px;
-    height: 45px;
-  }
+#puntuacion {
+  margin-top: 3rem;
+  padding: 1rem;
+  background-color: #e9f3ff;
+  border: 2px solid #0070f3;
+  border-radius: 8px;
+  display: inline-block;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #0047a6;
 }
