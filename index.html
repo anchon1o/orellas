@@ -2,16 +2,18 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Entrenamiento auditivo</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Entrenamiento Auditivo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Fuente Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="style.css">
   <script defer src="main.js"></script>
 </head>
 <body>
-  <h1>Serie dodecafónica</h1>
 
-  <div id="puntuacion">Puntuación: <span id="valor-puntuacion">0</span></div>
+  <h1>Serie Dodecafónica</h1>
 
   <div class="controles">
     <div class="control-slider">
@@ -19,6 +21,7 @@
       <input type="range" id="nivel" min="1" max="12" value="6">
       <span id="nivel-valor">6</span>
     </div>
+
     <div class="control-slider">
       <label for="velocidad">VELOCIDAD</label>
       <input type="range" id="velocidad" min="1" max="5" value="3">
@@ -35,6 +38,11 @@
   <div id="respuesta"></div>
   <p id="resultado"></p>
 
+  <!-- PUNTUACIÓN AL FINAL -->
+  <div id="puntuacion">
+    Puntuación: <span id="valor-puntuacion">0</span>
+  </div>
+
   <script>
     document.getElementById("nivel").oninput = e =>
       document.getElementById("nivel-valor").textContent = e.target.value;
@@ -42,5 +50,6 @@
     document.getElementById("velocidad").oninput = e =>
       document.getElementById("velocidad-valor").textContent = e.target.value;
   </script>
+
 </body>
 </html>
