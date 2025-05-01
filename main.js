@@ -35,7 +35,8 @@ function reproducirSerie() {
   const duracion = intervalo * 0.9;
 
   respuesta = [];
-  serie = [...todasLasNotas].sort(() => Math.random() - 0.5).slice(0, nivel);
+  const disponibles = soloNaturales ? notasNaturales : todasLasNotas;
+serie = [...disponibles].sort(() => Math.random() - 0.5).slice(0, nivel);
 
   for (let i = 0; i < serie.length; i++) {
     const osc = ac.createOscillator();
