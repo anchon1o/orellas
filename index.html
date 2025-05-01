@@ -3,45 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-  <title>Ejercicio Dodecafónico</title>
-  <link rel="stylesheet" href="style.css?v=2" />
+  <title>Serie Dodecafónica</title>
+  <link rel="stylesheet" href="style.css" />
   <script src="https://unpkg.com/vexflow/releases/vexflow-min.js"></script>
-  <script defer src="main.js?v=2"></script>
+  <script defer src="main.js"></script>
 </head>
 <body>
   <h1>Serie Dodecafónica</h1>
 
- <div class="controles">
-  <div class="control-slider">
-    <label for="nivel">NIVEL</label>
-    <input type="range" id="nivel" min="1" max="12" value="6" />
-    <span id="nivel-valor">6</span>
-  </div>
+  <div class="controles">
+    <div class="control-slider">
+      <label for="nivel">NIVEL</label>
+      <input type="range" id="nivel" min="1" max="12" value="6" />
+      <span id="nivel-valor">6</span>
+    </div>
 
-  <div class="control-slider">
-    <label for="velocidad">VELOCIDAD</label>
-    <input type="range" id="velocidad" min="1" max="5" value="3" />
-    <span id="velocidad-valor">3</span>
+    <div class="control-slider">
+      <label for="velocidad">VELOCIDAD</label>
+      <input type="range" id="velocidad" min="1" max="5" value="3" />
+      <span id="velocidad-valor">3</span>
+    </div>
   </div>
-</div>
 
   <button id="start">Reproducir serie</button>
-  <button id="pause">Parar</button>
+  <button id="pause">Pausar</button>
 
-  <!-- Fila superior: teclas alteradas -->
   <div id="teclas-alteradas" class="fila-teclas"></div>
-
-  <!-- Fila inferior: teclas naturales -->
   <div id="teclas-naturales" class="fila-teclas"></div>
 
-  <!-- Resultado del usuario -->
   <div id="respuesta"></div>
   <p id="resultado"></p>
   <div id="pentagrama" style="margin-top: 1rem;"></div>
 
   <script>
-    // Actualización de etiquetas dinámicas
     document.getElementById("nivel").oninput = (e) =>
       document.getElementById("nivel-valor").textContent = e.target.value;
 
