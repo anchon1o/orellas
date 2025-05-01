@@ -9,7 +9,6 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
-/* Selector de nivel */
 label[for="nivel"] {
   display: inline-block;
   margin-bottom: 0.5rem;
@@ -28,7 +27,6 @@ label[for="nivel"] {
   margin-left: 0.4rem;
 }
 
-/* Botón de reproducir */
 #start {
   background: #0070f3;
   color: white;
@@ -44,7 +42,6 @@ label[for="nivel"] {
   background: #005ad0;
 }
 
-/* Botonera de notas */
 #botonera {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -55,13 +52,16 @@ label[for="nivel"] {
 
 #botonera button {
   padding: 0.8rem;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   background: white;
   border: 2px solid #0070f3;
   border-radius: 12px;
   color: #0070f3;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
+  white-space: normal;
+  line-height: 1.2;
+  text-align: center;
 }
 
 #botonera button:hover {
@@ -69,7 +69,6 @@ label[for="nivel"] {
   color: white;
 }
 
-/* Feedback de respuesta */
 button.correct {
   background: green !important;
   color: white !important;
@@ -80,7 +79,6 @@ button.incorrect {
   color: white !important;
 }
 
-/* Texto respuesta y resultado */
 #respuesta {
   margin-top: 2rem;
   font-weight: bold;
