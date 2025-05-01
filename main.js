@@ -1,32 +1,35 @@
-const notas = [
+const notasNaturales = [
   { id: "C4", texto: "Do", freq: 261.63 },
-  { id: "C#4", texto: "Do♯<br>Re♭", freq: 277.18 },
   { id: "D4", texto: "Re", freq: 293.66 },
-  { id: "D#4", texto: "Re♯<br>Mi♭", freq: 311.13 },
   { id: "E4", texto: "Mi", freq: 329.63 },
   { id: "F4", texto: "Fa", freq: 349.23 },
-  { id: "F#4", texto: "Fa♯<br>Sol♭", freq: 369.99 },
   { id: "G4", texto: "Sol", freq: 392.00 },
-  { id: "G#4", texto: "Sol♯<br>La♭", freq: 415.30 },
   { id: "A4", texto: "La", freq: 440.00 },
-  { id: "A#4", texto: "La♯<br>Si♭", freq: 466.16 },
   { id: "B4", texto: "Si", freq: 493.88 }
 ];
 
+const notasAlteradas = [
+  { id: "C#4", texto: "Do♯<br>Re♭", freq: 277.18 },
+  { id: "D#4", texto: "Re♯<br>Mi♭", freq: 311.13 },
+  { id: "F#4", texto: "Fa♯<br>Sol♭", freq: 369.99 },
+  { id: "G#4", texto: "Sol♯<br>La♭", freq: 415.30 },
+  { id: "A#4", texto: "La♯<br>Si♭", freq: 466.16 }
+];
+
+const todasLasNotas = [...notasNaturales, ...notasAlteradas];
+
 let serie = [];
 let respuesta = [];
+let osciladoresActivos = [];
 
 const ac = new (window.AudioContext || window.webkitAudioContext)();
-let osciladoresActivos = [];
-let reproduciendo = false;
 
 function reproducirSerie() {
   detenerReproduccion();
 
   const nivel = parseInt(document.getElementById("nivel").value);
   respuesta = [];
-  serie = [...notas].sort(() => Math.random() - 0.5).slice(0, nivel);
-  reproduciendo = true;
+  serie = [...todasLasNotas].sort(() => Math.random() - 0.5).slice(0, nivel);
 
   for (let i = 0; i < serie.length; i++) {
     const osc = ac.createOscillator();
@@ -46,7 +49,7 @@ function reproducirSerie() {
   document.getElementById("respuesta").textContent = "Introduce el orden:";
   document.getElementById("resultado").textContent = "";
 
-  document.querySelectorAll('#botonera button').forEach(btn =>
+  document.querySelectorAll('button').forEach(btn =>
     btn.classList.remove('correct', 'incorrect')
   );
 }
@@ -55,17 +58,18 @@ function detenerReproduccion() {
   osciladoresActivos.forEach(osc => {
     try {
       osc.stop();
-    } catch (e) {}
+    } catch {}
   });
   osciladoresActivos = [];
-  reproduciendo = false;
 }
 
 function crearBotones() {
-  const contenedor = document.getElementById("botonera");
-  contenedor.innerHTML = "";
+  const contenedorNaturales = document.getElementById("teclas-naturales");
+  const contenedorAlteradas = document.getElementById("teclas-alteradas");
+  contenedorNaturales.innerHTML = "";
+  contenedorAlteradas.innerHTML = "";
 
-  notas.forEach(nota => {
+  const crear = (nota, contenedor) => {
     const btn = document.createElement("button");
     btn.innerHTML = nota.texto;
 
@@ -90,12 +94,15 @@ function crearBotones() {
     };
 
     contenedor.appendChild(btn);
-  });
+  };
+
+  notasNaturales.forEach(n => crear(n, contenedorNaturales));
+  notasAlteradas.forEach(n => crear(n, contenedorAlteradas));
 }
 
 function actualizarRespuesta() {
   const texto = respuesta.map(id => {
-    const nota = notas.find(n => n.id === id);
+    const nota = todasLasNotas.find(n => n.id === id);
     return nota ? nota.texto.replace(/<br>/g, "/") : id;
   }).join(" - ");
   document.getElementById("respuesta").textContent = "Tu respuesta: " + texto;
@@ -111,8 +118,8 @@ function verificar() {
     resultado.textContent = "¡Correcto!";
     resultado.style.color = "green";
   } else {
-    const serieTexto = serie.map(n => n.texto.replace(/<br>/g, "/")).join(" - ");
-    resultado.textContent = "Incorrecto. La serie era: " + serieTexto;
+    const textoCorrecto = serie.map(n => n.texto.replace(/<br>/g, "/")).join(" - ");
+    resultado.textContent = "Incorrecto. La serie era: " + textoCorrecto;
     resultado.style.color = "red";
   }
 }
