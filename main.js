@@ -1,16 +1,16 @@
 const notas = [
-  { nombre: "Do", freq: 261.63 },
-  { nombre: "Do#", freq: 277.18 },
-  { nombre: "Re", freq: 293.66 },
-  { nombre: "Re#", freq: 311.13 },
-  { nombre: "Mi", freq: 329.63 },
-  { nombre: "Fa", freq: 349.23 },
-  { nombre: "Fa#", freq: 369.99 },
-  { nombre: "Sol", freq: 392.00 },
-  { nombre: "Sol#", freq: 415.30 },
-  { nombre: "La", freq: 440.00 },
-  { nombre: "La#", freq: 466.16 },
-  { nombre: "Si", freq: 493.88 }
+  { id: "C4", texto: "Do", freq: 261.63 },
+  { id: "C#4", texto: "Do♯<br>Re♭", freq: 277.18 },
+  { id: "D4", texto: "Re", freq: 293.66 },
+  { id: "D#4", texto: "Re♯<br>Mi♭", freq: 311.13 },
+  { id: "E4", texto: "Mi", freq: 329.63 },
+  { id: "F4", texto: "Fa", freq: 349.23 },
+  { id: "F#4", texto: "Fa♯<br>Sol♭", freq: 369.99 },
+  { id: "G4", texto: "Sol", freq: 392.00 },
+  { id: "G#4", texto: "Sol♯<br>La♭", freq: 415.30 },
+  { id: "A4", texto: "La", freq: 440.00 },
+  { id: "A#4", texto: "La♯<br>Si♭", freq: 466.16 },
+  { id: "B4", texto: "Si", freq: 493.88 }
 ];
 
 let serie = [];
@@ -41,7 +41,7 @@ function reproducirSerie() {
   document.getElementById("respuesta").textContent = "Introduce el orden:";
   document.getElementById("resultado").textContent = "";
 
-  // Limpiar feedback de botones
+  // Reset estilos
   document.querySelectorAll('#botonera button').forEach(btn =>
     btn.classList.remove('correct', 'incorrect')
   );
@@ -53,17 +53,18 @@ function crearBotones() {
 
   notas.forEach(nota => {
     const btn = document.createElement("button");
-    btn.textContent = nota.nombre;
+    btn.innerHTML = nota.texto;
+
     btn.onclick = () => {
       const nivel = parseInt(document.getElementById("nivel").value);
       if (respuesta.length >= nivel) return;
 
-      respuesta.push(nota.nombre);
+      respuesta.push(nota.id);
       actualizarRespuesta();
 
       const index = respuesta.length - 1;
-      const esperado = serie[index].nombre;
-      if (nota.nombre === esperado) {
+      const esperado = serie[index].id;
+      if (nota.id === esperado) {
         btn.classList.add("correct");
       } else {
         btn.classList.add("incorrect");
@@ -73,17 +74,22 @@ function crearBotones() {
         verificar();
       }
     };
+
     contenedor.appendChild(btn);
   });
 }
 
 function actualizarRespuesta() {
-  document.getElementById("respuesta").textContent =
-    "Tu respuesta: " + respuesta.join(" - ");
+  const texto = respuesta.map(id => {
+    const nota = notas.find(n => n.id === id);
+    return nota ? nota.texto.replace(/<br>/g, "/") : id;
+  }).join(" - ");
+  document.getElementById("respuesta").textContent = "Tu respuesta: " + texto;
 }
 
 function verificar() {
-  const correcta = serie.map(n => n.nombre).join(",");
+  const nivel = parseInt(document.getElementById("nivel").value);
+  const correcta = serie.map(n => n.id).join(",");
   const usuario = respuesta.join(",");
   const resultado = document.getElementById("resultado");
 
@@ -91,7 +97,8 @@ function verificar() {
     resultado.textContent = "¡Correcto!";
     resultado.style.color = "green";
   } else {
-    resultado.textContent = "Incorrecto. La serie era: " + correcta;
+    const serieTexto = serie.map(n => n.texto.replace(/<br>/g, "/")).join(" - ");
+    resultado.textContent = "Incorrecto. La serie era: " + serieTexto;
     resultado.style.color = "red";
   }
 }
