@@ -1,65 +1,35 @@
 body {
-  font-family: system-ui, sans-serif;
+  font-family: sans-serif;
   text-align: center;
   padding: 2rem;
-  background-color: #f9f9f9;
-  color: #333;
+  background-color: #f4f4f4;
 }
 
 h1 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-label, select {
-  font-size: 1rem;
-  margin: 0.5rem;
+.keyboard {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  height: 200px;
 }
 
-button {
-  margin: 0.5rem;
-  padding: 0.5rem 1.2rem;
-  font-size: 1rem;
-  cursor: pointer;
-  border: none;
-  background-color: #0070f3;
-  color: white;
-  border-radius: 4px;
-  transition: background-color 0.2s;
+.white {
+  width: 40px;
+  height: 200px;
+  background: white;
+  border: 1px solid #333;
+  position: relative;
+  z-index: 1;
 }
 
-button:hover {
-  background-color: #0059c1;
-}
-
-#keyboard {
-  margin-top: 2rem;
-}
-
-.key {
-  display: inline-block;
-  margin: 0.3rem;
-  padding: 0.7rem 1rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.key:hover {
-  background-color: #f0f0f0;
-}
-
-.correct {
-  color: green;
-  font-weight: bold;
-  margin-top: 1rem;
-}
-
-.incorrect {
-  color: red;
-  font-weight: bold;
-  margin-top: 1rem;
+.black {
+  width: 25px;
+  height: 120px;
+  background: black;
+  position: absolute;
+  z-index: 2;
+  margin-left: -12.5px;
 }
