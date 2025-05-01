@@ -25,7 +25,7 @@ let serie = [];
 let respuesta = [];
 let osciladoresActivos = [];
 let puntuacionTotal = 0;
-
+let ultimaReproduccion = []; // NUEVO
 
 const ac = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -39,27 +39,30 @@ function reproducirSerie() {
 
   respuesta = [];
   const disponibles = soloNaturales ? notasNaturales : todasLasNotas;
-serie = [...disponibles].sort(() => Math.random() - 0.5).slice(0, nivel);
+  serie = [...disponibles].sort(() => Math.random() - 0.5).slice(0, nivel);
+  ultimaReproduccion = [];
 
   for (let i = 0; i < serie.length; i++) {
-  const osc = ac.createOscillator();
-  const gain = ac.createGain();
-  osc.type = "sine";
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+    osc.type = "sine";
 
-  let freq = serie[i].freq;
-  if (usarOctavaSuperior && Math.random() < 0.5) freq *= 2;
-  if (usarOctavaInferior && Math.random() < 0.5) freq /= 2;
-  osc.frequency.value = freq;
+    let freq = serie[i].freq;
+    if (usarOctavaSuperior && Math.random() < 0.5) freq *= 2;
+    if (usarOctavaInferior && Math.random() < 0.5) freq /= 2;
+    osc.frequency.value = freq;
 
-  osc.connect(gain);
-  gain.connect(ac.destination);
+    ultimaReproduccion.push({ freq }); // NUEVO
 
-  const t = ac.currentTime + i * intervalo;
-  osc.start(t);
-  osc.stop(t + duracion);
+    osc.connect(gain);
+    gain.connect(ac.destination);
 
-  osciladoresActivos.push(osc);
-}
+    const t = ac.currentTime + i * intervalo;
+    osc.start(t);
+    osc.stop(t + duracion);
+
+    osciladoresActivos.push(osc);
+  }
 
   document.getElementById("respuesta").innerHTML = "";
   document.getElementById("resultado").innerHTML = "";
@@ -180,11 +183,8 @@ let soloNaturales = false;
 
 document.getElementById("solo-naturales").addEventListener("change", e => {
   soloNaturales = e.target.checked;
-
-  // Mostrar/ocultar teclas negras
   document.getElementById("teclas-alteradas").style.display = soloNaturales ? "none" : "flex";
 
-  // Limitar nivel máximo
   const nivelInput = document.getElementById("nivel");
   if (soloNaturales && parseInt(nivelInput.value) > 7) {
     nivelInput.value = 7;
@@ -202,6 +202,34 @@ document.getElementById("octava-superior").addEventListener("change", e => {
 document.getElementById("octava-inferior").addEventListener("change", e => {
   usarOctavaInferior = e.target.checked;
 });
+
 document.getElementById("start").onclick = reproducirSerie;
 document.getElementById("pause").onclick = detenerReproduccion;
+
+// NUEVO: Botón Repetir
+document.getElementById("repeat").onclick = () => {
+  if (!ultimaReproduccion.length) return;
+
+  detenerReproduccion();
+  const velocidad = parseInt(document.getElementById("velocidad").value);
+  const intervalo = 1.4 - (velocidad * 0.2);
+  const duracion = intervalo * 0.9;
+
+  for (let i = 0; i < ultimaReproduccion.length; i++) {
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+    osc.type = "sine";
+    osc.frequency.value = ultimaReproduccion[i].freq;
+
+    osc.connect(gain);
+    gain.connect(ac.destination);
+
+    const t = ac.currentTime + i * intervalo;
+    osc.start(t);
+    osc.stop(t + duracion);
+
+    osciladoresActivos.push(osc);
+  }
+};
+
 document.addEventListener("DOMContentLoaded", crearBotones);
