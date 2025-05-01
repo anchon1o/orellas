@@ -212,6 +212,13 @@ document.getElementById("repeat").onclick = () => {
   if (!ultimaReproduccion.length) return;
 
   detenerReproduccion();
+
+  const nivel = parseInt(document.getElementById("nivel").value);
+  puntuacionTotal -= nivel * 4;
+  if (puntuacionTotal < 0) puntuacionTotal = 0;
+
+  document.getElementById("valor-puntuacion").textContent = puntuacionTotal;
+
   const velocidad = parseInt(document.getElementById("velocidad").value);
   const intervalo = 1.4 - (velocidad * 0.2);
   const duracion = intervalo * 0.9;
