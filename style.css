@@ -78,13 +78,13 @@ h1 {
 }
 
 .correct {
-  background-color: green;
-  color: white;
+  background-color: green !important;
+  color: white !important;
 }
 
 .incorrect {
-  background-color: red;
-  color: white;
+  background-color: red !important;
+  color: white !important;
 }
 
 #respuesta {
