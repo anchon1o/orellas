@@ -22,6 +22,8 @@ const todasLasNotas = [...notasNaturales, ...notasAlteradas.filter(n => n.id)];
 let serie = [];
 let respuesta = [];
 let osciladoresActivos = [];
+let puntuacionTotal = 0;
+let rachaPerfecta = 0;
 
 const ac = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -53,10 +55,8 @@ function reproducirSerie() {
 
   document.getElementById("respuesta").innerHTML = "";
   document.getElementById("resultado").innerHTML = "";
-  document.getElementById("pentagrama").innerHTML = "";
-
-  document.querySelectorAll('button').forEach(btn =>
-    btn.classList.remove('correct', 'incorrect')
+  document.querySelectorAll("button").forEach(btn =>
+    btn.classList.remove("correct", "incorrect")
   );
 }
 
@@ -116,11 +116,8 @@ function crearBotones() {
 }
 
 function actualizarRespuesta() {
-  const nivel = parseInt(document.getElementById("nivel").value);
   const contenedor = document.getElementById("respuesta");
   contenedor.innerHTML = "";
-
-  const fragmento = document.createDocumentFragment();
 
   respuesta.forEach((id, i) => {
     const esperado = serie[i]?.id;
@@ -136,57 +133,39 @@ function actualizarRespuesta() {
     }
 
     span.style.marginRight = "0.4rem";
-    fragmento.appendChild(span);
+    contenedor.appendChild(span);
   });
-
-  contenedor.appendChild(fragmento);
 }
 
 function verificar() {
-  const contenedor = document.getElementById("resultado");
-  const correcta = serie.map(n => n.id).join(",");
-  const usuario = respuesta.join(",");
+  const nivel = parseInt(document.getElementById("nivel").value);
+  const resultado = document.getElementById("resultado");
 
-  if (usuario === correcta) {
-    contenedor.innerHTML = `<div style="color: green; font-weight: bold;">✔ Correcto</div>`;
-  } else {
-    contenedor.innerHTML = "";
-  }
-}
+  let puntos = 0;
+  let errores = 0;
 
-function dibujarSerieEnPentagrama(notas) {
-  const VF = Vex.Flow;
-  const div = document.getElementById("pentagrama");
-  div.innerHTML = "";
-
-  const renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
-  renderer.resize(500, 120);
-  const context = renderer.getContext();
-
-  const stave = new VF.Stave(10, 20, 480);
-  stave.addClef("treble").setContext(context).draw();
-
-  const notasVex = notas.map(n => {
-    const id = n.id;
-    const nota = id.slice(0, id.length - 1).toLowerCase(); // ej. c, c#
-    const octava = id.slice(-1);
-    const key = `${nota}/${octava}`;
-    const note = new VF.StaveNote({
-      clef: "treble",
-      keys: [key],
-      duration: "q"
-    });
-    if (nota.includes("#")) {
-      note.addAccidental(0, new VF.Accidental("#"));
+  respuesta.forEach((id, i) => {
+    if (serie[i]?.id === id) {
+      puntos += 100;
+    } else {
+      errores++;
     }
-    return note;
   });
 
-  const voice = new VF.Voice({ num_beats: notas.length, beat_value: 4 });
-  voice.addTickables(notasVex);
+  if (errores === 0) {
+    puntos += 100 * nivel;
+    rachaPerfecta++;
+    if (rachaPerfecta > 1) {
+      puntuacionTotal *= rachaPerfecta;
+    }
+  } else {
+    puntos -= errores * 50;
+    rachaPerfecta = 0;
+  }
 
-  new VF.Formatter().joinVoices([voice]).format([voice], 450);
-  voice.draw(context, stave);
+  puntuacionTotal += puntos;
+  document.getElementById("valor-puntuacion").textContent = puntuacionTotal;
+  resultado.textContent = errores === 0 ? "✔ Correcto" : "";
 }
 
 document.getElementById("start").onclick = reproducirSerie;
