@@ -200,9 +200,13 @@ input:checked + .slider::before {
 
 /* Respuesta y marcador */
 #respuesta {
-  margin-top: 2rem;
-  font-size: 1rem;
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
   min-height: 1.2rem;
+  line-height: 1.2;
+  word-spacing: 0.4rem;
+  letter-spacing: 0.5px;
+  font-weight: 500;
 }
 
 #resultado {
