@@ -1,40 +1,80 @@
 const notas = [
-  "C4", "C#4", "D4", "D#4", "E4",
-  "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"
+  { nombre: "C4", freq: 261.63 },
+  { nombre: "C#4", freq: 277.18 },
+  { nombre: "D4", freq: 293.66 },
+  { nombre: "D#4", freq: 311.13 },
+  { nombre: "E4", freq: 329.63 },
+  { nombre: "F4", freq: 349.23 },
+  { nombre: "F#4", freq: 369.99 },
+  { nombre: "G4", freq: 392.00 },
+  { nombre: "G#4", freq: 415.30 },
+  { nombre: "A4", freq: 440.00 },
+  { nombre: "A#4", freq: 466.16 },
+  { nombre: "B4", freq: 493.88 }
 ];
 
-const blancas = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
-const negras = [
-  { nota: "C#4", pos: 1 },
-  { nota: "D#4", pos: 2 },
-  { nota: "F#4", pos: 4 },
-  { nota: "G#4", pos: 5 },
-  { nota: "A#4", pos: 6 }
-];
+let serie = [];
+let respuesta = [];
 
-function reproducirNota(nota) {
-  const url = `https://ffont.github.io/AudioKeys/audio/${nota}.mp3`;
-  const audio = new Audio(url);
-  audio.play();
+const ac = new (window.AudioContext || window.webkitAudioContext)();
+
+function reproducirNota(freq, dur = 0.7, t = 0) {
+  const osc = ac.createOscillator();
+  const gain = ac.createGain();
+  osc.type = "sine";
+  osc.frequency.value = freq;
+  osc.connect(gain);
+  gain.connect(ac.destination);
+  osc.start(ac.currentTime + t);
+  osc.stop(ac.currentTime + t + dur);
 }
 
-function crearTeclado() {
-  const contenedor = document.getElementById("keyboard");
+function reproducirSerie() {
+  respuesta = [];
+  serie = [...notas].sort(() => Math.random() - 0.5);
+  for (let i = 0; i < serie.length; i++) {
+    reproducirNota(serie[i].freq, 0.6, i * 0.7);
+  }
+  document.getElementById("respuesta").textContent = "Introduce el orden:";
+  document.getElementById("resultado").textContent = "";
+}
 
-  blancas.forEach(nota => {
-    const el = document.createElement("div");
-    el.className = "white";
-    el.onclick = () => reproducirNota(nota);
-    contenedor.appendChild(el);
-  });
+function crearBotones() {
+  const contenedor = document.getElementById("botonera");
+  contenedor.innerHTML = "";
 
-  negras.forEach(({ nota, pos }) => {
-    const el = document.createElement("div");
-    el.className = "black";
-    el.style.left = `${pos * 40 - 12.5}px`;
-    el.onclick = () => reproducirNota(nota);
-    contenedor.appendChild(el);
+  notas.forEach(nota => {
+    const btn = document.createElement("button");
+    btn.textContent = nota.nombre;
+    btn.onclick = () => {
+      respuesta.push(nota.nombre);
+      actualizarRespuesta();
+      if (respuesta.length === 12) {
+        verificar();
+      }
+    };
+    contenedor.appendChild(btn);
   });
 }
 
-document.addEventListener("DOMContentLoaded", crearTeclado);
+function actualizarRespuesta() {
+  document.getElementById("respuesta").textContent =
+    "Tu respuesta: " + respuesta.join(" - ");
+}
+
+function verificar() {
+  const correcta = serie.map(n => n.nombre).join(",");
+  const usuario = respuesta.join(",");
+  const resultado = document.getElementById("resultado");
+
+  if (usuario === correcta) {
+    resultado.textContent = "¡Correcto!";
+    resultado.style.color = "green";
+  } else {
+    resultado.textContent = "Incorrecto. La serie era: " + correcta;
+    resultado.style.color = "red";
+  }
+}
+
+document.getElementById("start").onclick = reproducirSerie;
+document.addEventListener("DOMContentLoaded", crearBotones);
