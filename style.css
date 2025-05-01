@@ -9,19 +9,14 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
+/* Controles (sliders de nivel y velocidad) */
 .controles {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 1rem;
   margin-bottom: 1rem;
-}
-
-@media (min-width: 500px) {
-  .controles {
-    flex-direction: row;
-    justify-content: center;
-  }
 }
 
 .controles label {
@@ -33,7 +28,7 @@ h1 {
   width: 150px;
 }
 
-/* Botones de control */
+/* Botones de reproducción */
 #start, #pause {
   background: #0070f3;
   color: white;
@@ -54,8 +49,15 @@ h1 {
   display: flex;
   justify-content: center;
   gap: 0.4rem;
-  margin-top: 1.2rem;
   flex-wrap: nowrap;
+}
+
+#teclas-alteradas {
+  margin-top: 1.2rem;
+}
+
+#teclas-naturales {
+  margin-top: 0.4rem;
 }
 
 .fila-teclas button {
@@ -99,7 +101,7 @@ h1 {
   background: #555;
 }
 
-/* Tecla fantasma */
+/* Tecla fantasma (espaciadora) */
 button.ghost {
   background: transparent;
   border: none;
@@ -109,7 +111,7 @@ button.ghost {
   height: 35px;
 }
 
-/* Feedback */
+/* Feedback visual */
 button.correct {
   background: green !important;
   color: white !important;
@@ -120,7 +122,7 @@ button.incorrect {
   color: white !important;
 }
 
-/* Texto de respuesta y resultado */
+/* Texto de respuesta */
 #respuesta {
   margin-top: 2rem;
   font-weight: bold;
@@ -133,7 +135,7 @@ button.incorrect {
   margin-top: 1.5rem;
 }
 
-/* Estilo adaptable a pantallas grandes */
+/* Pantallas grandes */
 @media (min-width: 600px) {
   #teclas-naturales button {
     width: 50px;
