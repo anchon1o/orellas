@@ -128,11 +128,13 @@ function verificar() {
   const resultado = document.getElementById("resultado");
 
   if (usuario === correcta) {
-    resultado.innerHTML = `<div class="resultado-discreto correcto">✔ Correcto</div>`;
-  } else {
-    const textoCorrecto = serie.map(n => n.texto.replace(/<br>/g, "/")).join(" – ");
-    resultado.innerHTML = `<div class="serie-correcta">Serie correcta: ${textoCorrecto}</div>`;
-  }
+  resultado.innerHTML = `<div class="resultado-discreto correcto">✔ Correcto</div>`;
+  document.getElementById("pentagrama").innerHTML = "";
+} else {
+  const textoCorrecto = serie.map(n => n.texto.replace(/<br>/g, "/")).join(" – ");
+  resultado.innerHTML = `<div class="serie-correcta">Serie correcta:</div>`;
+  dibujarSerieEnPentagrama(serie);
+}
 }
 function dibujarSerieEnPentagrama(notas) {
   const VF = Vex.Flow;
