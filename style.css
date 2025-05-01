@@ -177,7 +177,6 @@ button.incorrect {
   font-size: 0.8rem;
   color: #777;
 }
-}
 
 /* Pantallas grandes */
 @media (min-width: 600px) {
