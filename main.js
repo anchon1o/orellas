@@ -11,12 +11,13 @@ const notasNaturales = [
 const notasAlteradas = [
   { id: "C#4", texto: "Do♯<br>Re♭", freq: 277.18 },
   { id: "D#4", texto: "Re♯<br>Mi♭", freq: 311.13 },
+  { espacio: true },
   { id: "F#4", texto: "Fa♯<br>Sol♭", freq: 369.99 },
   { id: "G#4", texto: "Sol♯<br>La♭", freq: 415.30 },
   { id: "A#4", texto: "La♯<br>Si♭", freq: 466.16 }
 ];
 
-const todasLasNotas = [...notasNaturales, ...notasAlteradas];
+const todasLasNotas = [...notasNaturales, ...notasAlteradas.filter(n => n.id)];
 
 let serie = [];
 let respuesta = [];
@@ -69,35 +70,44 @@ function crearBotones() {
   contenedorNaturales.innerHTML = "";
   contenedorAlteradas.innerHTML = "";
 
-  const crear = (nota, contenedor) => {
+  const crear = (nota, contenedor, claseExtra = "") => {
     const btn = document.createElement("button");
-    btn.innerHTML = nota.texto;
+    btn.innerHTML = nota.texto || "";
+    btn.classList.add(claseExtra);
 
-    btn.onclick = () => {
-      const nivel = parseInt(document.getElementById("nivel").value);
-      if (respuesta.length >= nivel) return;
+    if (nota.id) {
+      btn.onclick = () => {
+        const nivel = parseInt(document.getElementById("nivel").value);
+        if (respuesta.length >= nivel) return;
 
-      respuesta.push(nota.id);
-      actualizarRespuesta();
+        respuesta.push(nota.id);
+        actualizarRespuesta();
 
-      const index = respuesta.length - 1;
-      const esperado = serie[index].id;
-      if (nota.id === esperado) {
-        btn.classList.add("correct");
-      } else {
-        btn.classList.add("incorrect");
-      }
+        const index = respuesta.length - 1;
+        const esperado = serie[index].id;
+        if (nota.id === esperado) {
+          btn.classList.add("correct");
+        } else {
+          btn.classList.add("incorrect");
+        }
 
-      if (respuesta.length === nivel) {
-        verificar();
-      }
-    };
+        if (respuesta.length === nivel) {
+          verificar();
+        }
+      };
+    }
 
     contenedor.appendChild(btn);
   };
 
   notasNaturales.forEach(n => crear(n, contenedorNaturales));
-  notasAlteradas.forEach(n => crear(n, contenedorAlteradas));
+  notasAlteradas.forEach(n => {
+    if (n.espacio) {
+      crear({ texto: "" }, contenedorAlteradas, "ghost");
+    } else {
+      crear(n, contenedorAlteradas);
+    }
+  });
 }
 
 function actualizarRespuesta() {
