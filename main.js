@@ -167,6 +167,25 @@ function verificar() {
   document.getElementById("valor-puntuacion").textContent = puntuacionTotal;
 }
 
+let soloNaturales = false;
+
+document.getElementById("solo-naturales").addEventListener("change", e => {
+  soloNaturales = e.target.checked;
+
+  // Mostrar/ocultar teclas negras
+  document.getElementById("teclas-alteradas").style.display = soloNaturales ? "none" : "flex";
+
+  // Limitar nivel máximo
+  const nivelInput = document.getElementById("nivel");
+  if (soloNaturales && parseInt(nivelInput.value) > 7) {
+    nivelInput.value = 7;
+    document.getElementById("nivel-valor").textContent = "7";
+  }
+  nivelInput.max = soloNaturales ? 7 : 12;
+
+  crearBotones();
+});
+
 document.getElementById("start").onclick = reproducirSerie;
 document.getElementById("pause").onclick = detenerReproduccion;
 document.addEventListener("DOMContentLoaded", crearBotones);
