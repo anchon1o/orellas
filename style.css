@@ -45,9 +45,9 @@ label[for="nivel"] {
 .fila-teclas {
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   margin-top: 1.2rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .fila-teclas button {
@@ -64,9 +64,7 @@ label[for="nivel"] {
   padding: 0.2rem;
 }
 
-/* Tamaño base para móvil */
-
-/* Teclas naturales */
+/* Teclas naturales (blancas) */
 #teclas-naturales button {
   width: 40px;
   height: 40px;
@@ -75,7 +73,12 @@ label[for="nivel"] {
   color: #0070f3;
 }
 
-/* Teclas alteradas */
+#teclas-naturales button:hover {
+  background: #0070f3;
+  color: white;
+}
+
+/* Teclas alteradas (negras) */
 #teclas-alteradas button {
   width: 35px;
   height: 35px;
@@ -84,22 +87,18 @@ label[for="nivel"] {
   color: white;
 }
 
-#teclas-naturales button:hover {
-  background: #0070f3;
-  color: white;
-}
-
 #teclas-alteradas button:hover {
   background: #555;
 }
 
-/* Teclas fantasma (espacios entre teclas negras) */
+/* Tecla fantasma (espaciadora entre negras) */
 button.ghost {
   background: transparent;
   border: none;
-  cursor: default;
-  pointer-events: none;
   visibility: hidden;
+  pointer-events: none;
+  width: 35px;
+  height: 35px;
 }
 
 /* Feedback */
@@ -125,7 +124,7 @@ button.incorrect {
   margin-top: 1.5rem;
 }
 
-/* Adaptación a pantallas más grandes */
+/* Estilo adaptable para pantallas grandes */
 @media (min-width: 600px) {
   #teclas-naturales button {
     width: 50px;
@@ -137,5 +136,10 @@ button.incorrect {
     width: 45px;
     height: 45px;
     font-size: 0.75rem;
+  }
+
+  button.ghost {
+    width: 45px;
+    height: 45px;
   }
 }
