@@ -19,6 +19,9 @@ const notasAlteradas = [
 
 const todasLasNotas = [...notasNaturales, ...notasAlteradas.filter(n => n.id)];
 
+let modo = "directo";
+let reproduciendo = false;
+let yaRespondio = false;
 let usarOctavaSuperior = false;
 let usarOctavaInferior = false;
 let serie = [];
@@ -38,9 +41,17 @@ function reproducirSerie() {
   const duracion = intervalo * 0.9;
 
   respuesta = [];
+  yaRespondio = false;
+  reproduciendo = true;
+  document.getElementById("repeat").disabled = false;
+
   const disponibles = soloNaturales ? notasNaturales : todasLasNotas;
   serie = [...disponibles].sort(() => Math.random() - 0.5).slice(0, nivel);
   ultimaReproduccion = [];
+
+  if (modo === "memoria") {
+    document.querySelectorAll("#teclas-naturales button, #teclas-alteradas button").forEach(btn => btn.disabled = true);
+  }
 
   for (let i = 0; i < serie.length; i++) {
     const osc = ac.createOscillator();
@@ -53,7 +64,7 @@ function reproducirSerie() {
     if (usarOctavaInferior && Math.random() < 0.5) freq /= 2;
     osc.frequency.value = freq;
 
-    ultimaReproduccion.push({ freq }); // NUEVO
+    ultimaReproduccion.push({ freq });
 
     osc.connect(gain);
     gain.connect(ac.destination);
@@ -64,6 +75,14 @@ function reproducirSerie() {
 
     osciladoresActivos.push(osc);
   }
+
+  // Al finalizar la reproducción, desbloqueamos teclas si es modo memoria
+  setTimeout(() => {
+    if (modo === "memoria") {
+      document.querySelectorAll("#teclas-naturales button, #teclas-alteradas button").forEach(btn => btn.disabled = false);
+    }
+    reproduciendo = false;
+  }, nivel * intervalo * 1000);
 
   document.getElementById("respuesta").innerHTML = "";
   document.getElementById("resultado").innerHTML = "";
@@ -94,9 +113,14 @@ function crearBotones() {
 
     if (nota.id) {
       btn.onclick = () => {
-        const nivel = parseInt(document.getElementById("nivel").value);
-        const velocidad = parseInt(document.getElementById("velocidad").value);
-        if (respuesta.length >= nivel) return;
+  const nivel = parseInt(document.getElementById("nivel").value);
+  const velocidad = parseInt(document.getElementById("velocidad").value);
+
+  // Bloqueo en modo memoria durante reproducción o si ya se respondió
+  if (modo === "memoria" && reproduciendo) return;
+  if (modo === "memoria" && yaRespondio) return;
+
+  if (respuesta.length >= nivel) return;
 
         respuesta.push(nota.id);
         actualizarRespuesta();
@@ -124,8 +148,12 @@ function crearBotones() {
         document.getElementById("valor-puntuacion").textContent = puntuacionTotal;
 
         if (respuesta.length === nivel) {
-          verificar();
-        }
+          if (modo === "memoria") {
+            yaRespondio = true;
+            document.getElementById("repeat").disabled = true;
+          }
+  verificar();
+}
       };
     }
 
@@ -267,3 +295,6 @@ document.getElementById("repeat").onclick = () => {
 };
 
 document.addEventListener("DOMContentLoaded", crearBotones);
+document.getElementById("modo").addEventListener("change", e => {
+  modo = e.target.value;
+});
