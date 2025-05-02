@@ -294,4 +294,13 @@ document.getElementById("repeat").onclick = () => {
 document.addEventListener("DOMContentLoaded", crearBotones);
 document.getElementById("modo").addEventListener("change", e => {
   modo = e.target.value;
+
+  // Si cambiamos a modo directo, mostrar los teclados si estaban ocultos
+  if (modo === "directo") {
+    document.getElementById("teclas-naturales").style.display = "flex";
+    if (!soloNaturales) {
+      document.getElementById("teclas-alteradas").style.display = "flex";
+    }
+  }
+});
 });
